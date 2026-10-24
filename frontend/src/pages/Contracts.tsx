@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { ChevronLeft, ChevronRight, Clock, Search } from 'lucide-react'
 
-import { api, formatDate, type ContractStatus, type ContractSummary } from '../api'
+import { api, formatDate, normalizeAr, type ContractStatus, type ContractSummary } from '../api'
 
 const STATUS: Record<ContractStatus, { label: string; style: string; dot: string }> = {
   active: { label: 'Active', style: 'border-emerald-400/50 text-emerald-300', dot: 'bg-emerald-400' },
@@ -36,11 +36,15 @@ export default function Contracts() {
   const navigate = useNavigate()
   const [all, setAll] = useState<ContractSummary[] | null>(null)
   const [error, setError] = useState('')
-  const [q, setQ] = useState('')
-  const [type, setType] = useState('')
-  const [status, setStatus] = useState('')
-  const [source, setSource] = useState('')
+  const [filters, setFilters] = useState({ q: '', type: '', status: '', source: '' })
   const [page, setPage] = useState(0)
+  const [today] = useState(() => new Date().toISOString())
+  const { q, type, status, source } = filters
+  // Any filter change starts again from the first page.
+  const setFilter = (key: keyof typeof filters) => (value: string) => {
+    setFilters((f) => ({ ...f, [key]: value }))
+    setPage(0)
+  }
 
   useEffect(() => {
     api.contracts().then(setAll).catch((e) => setError(e.message))
@@ -48,18 +52,15 @@ export default function Contracts() {
 
   const types = useMemo(() => [...new Set((all ?? []).map((c) => c.contract_type))].sort(), [all])
   const rows = useMemo(() => {
-    const needle = q.trim().toLowerCase()
+    const needle = normalizeAr(q.trim().toLowerCase())
     return (all ?? []).filter(
       (c) =>
-        (!needle || `${c.title} ${c.supplier ?? ''}`.toLowerCase().includes(needle)) &&
+        (!needle || normalizeAr(`${c.title} ${c.supplier ?? ''} ${c.supplier_ar ?? ''}`.toLowerCase()).includes(needle)) &&
         (!type || c.contract_type === type) &&
         (!status || c.status === status) &&
         (!source || c.source === source),
     )
   }, [all, q, type, status, source])
-  useEffect(() => {
-    setPage(0)
-  }, [q, type, status, source])
 
   const expiring = (all ?? []).filter((c) => c.status === 'expiring_soon').length
   const pages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE))
@@ -76,20 +77,20 @@ export default function Contracts() {
               <Search className="h-5 w-5 text-muted" aria-hidden />
               <input
                 value={q}
-                onChange={(e) => setQ(e.target.value)}
+                onChange={(e) => setFilter('q')(e.target.value)}
                 placeholder="Search contracts…"
                 aria-label="Search contracts"
                 className="w-full bg-transparent py-3 outline-none placeholder:text-muted"
               />
             </label>
-            <Select label="Contract type" value={type} onChange={setType} options={types.map((t) => [t, t])} />
+            <Select label="Contract type" value={type} onChange={setFilter('type')} options={types.map((t) => [t, t])} />
             <Select
               label="Status"
               value={status}
-              onChange={setStatus}
+              onChange={setFilter('status')}
               options={Object.entries(STATUS).map(([k, v]) => [k, v.label])}
             />
-            <Select label="Source" value={source} onChange={setSource} options={[['synthetic', 'Sample suppliers'], ['cuad', 'CUAD']]} />
+            <Select label="Source" value={source} onChange={setFilter('source')} options={[['synthetic', 'Sample suppliers'], ['cuad', 'CUAD']]} />
           </div>
         </div>
         <img src="/mascots/mascot-contracts.webp" alt="" className="hidden h-52 object-contain md:block" />
@@ -97,7 +98,7 @@ export default function Contracts() {
 
       {expiring > 0 && (
         <button
-          onClick={() => setStatus('expiring_soon')}
+          onClick={() => setFilter('status')('expiring_soon')}
           className="flex w-full items-center gap-3 rounded-xl border border-amber-400/60 bg-amber-400/10 px-5 py-4 text-left font-semibold text-amber-300"
         >
           <Clock className="h-5 w-5" aria-hidden />
@@ -107,9 +108,9 @@ export default function Contracts() {
 
       <section className="card overflow-hidden">
         <div className="flex items-center gap-4 px-6 py-4">
-          <p className="text-lg font-bold">{rows.length} contracts</p>
+          <p className="text-lg font-bold">{rows.length} {rows.length === 1 ? 'contract' : 'contracts'}</p>
           <span className="h-6 w-px bg-line" />
-          <p className="text-sm text-muted">As of {formatDate(new Date().toISOString())}</p>
+          <p className="text-sm text-muted">As of {formatDate(today)}</p>
         </div>
         {error && <p className="px-6 pb-4 text-rose-300">{error}</p>}
         <div className="overflow-x-auto">
@@ -128,6 +129,9 @@ export default function Contracts() {
               {all === null && !error && (
                 <tr><td colSpan={6} className="px-6 py-8 text-center text-muted">Loading…</td></tr>
               )}
+              {all !== null && rows.length === 0 && (
+                <tr><td colSpan={6} className="px-6 py-8 text-center text-muted">No contracts match these filters.</td></tr>
+              )}
               {visible.map((c) => {
                 const s = STATUS[c.status]
                 return (
@@ -138,7 +142,14 @@ export default function Contracts() {
                     title="Ask about this contract"
                   >
                     <td className="max-w-[420px] px-6 py-3">
-                      <p className="truncate">{c.supplier ?? c.title}</p>
+                      {/* A real link, so the row also works from the keyboard. */}
+                      <Link
+                        to={`/chat?contract=${c.id}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="block truncate hover:text-accent"
+                      >
+                        {c.supplier ?? c.title}
+                      </Link>
                       {c.supplier && <p className="truncate text-xs text-muted">{c.title}</p>}
                     </td>
                     <td className="px-4 py-3">{c.contract_type}</td>

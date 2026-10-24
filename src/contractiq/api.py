@@ -40,15 +40,16 @@ def list_contracts():
     today = date.today()
     with connect() as conn:
         rows = conn.execute(
-            """SELECT c.id, c.title, c.supplier, c.contract_type, c.language, c.source,
+            """SELECT c.id, c.title, c.supplier, c.supplier_ar, c.contract_type, c.language, c.source,
                       c.start_date, c.end_date, count(ch.id)
                FROM contracts c LEFT JOIN chunks ch ON ch.contract_id = c.id
                GROUP BY c.id
                ORDER BY c.source DESC, c.end_date NULLS LAST, c.title"""
         ).fetchall()
     return [
-        {"id": r[0], "title": r[1], "supplier": r[2], "contract_type": r[3], "language": r[4],
-         "source": r[5], "start_date": r[6], "end_date": r[7], "chunks": r[8], "status": status(r[7], today)}
+        {"id": r[0], "title": r[1], "supplier": r[2], "supplier_ar": r[3], "contract_type": r[4],
+         "language": r[5], "source": r[6], "start_date": r[7], "end_date": r[8], "chunks": r[9],
+         "status": status(r[8], today)}
         for r in rows
     ]
 

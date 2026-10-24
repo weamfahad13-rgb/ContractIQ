@@ -242,7 +242,7 @@ def main() -> None:
         for s in SUPPLIERS:
             text = contract_en(s) if s.language == "en" else contract_ar(s)
             cid = upsert_contract(conn, title=title(s), source="synthetic", contract_type=s.contract_type,
-                                  language=s.language, text=text, supplier=s.name,
+                                  language=s.language, text=text, supplier=s.name, supplier_ar=s.name_ar,
                                   start_date=s.start, end_date=s.end)
             sid = conn.execute(
                 """INSERT INTO suppliers (name, country, category) VALUES (%s, %s, %s)

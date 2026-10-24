@@ -22,22 +22,22 @@ const CONFIDENCE_STYLE = {
 }
 
 function AnswerText({ text, onCite }: { text: string; onCite: (n: number) => void }) {
-  const parts = text.split(/(\[\d+\])/g)
+  // Citations come as [1], or grouped as [1, 2] / [1،2]: one chip per number either way.
+  const parts = text.split(/(\[[\d\s,،]+\])/g)
   return (
     <p dir={isArabic(text) ? 'rtl' : 'ltr'} className="leading-7 whitespace-pre-wrap">
       {parts.map((p, i) => {
-        const m = p.match(/^\[(\d+)\]$/)
-        if (!m) return <Fragment key={i}>{p}</Fragment>
-        return (
+        if (!/^\[[\d\s,،]+\]$/.test(p)) return <Fragment key={i}>{p}</Fragment>
+        return (p.match(/\d+/g) ?? []).map((n) => (
           <button
-            key={i}
-            onClick={() => onCite(Number(m[1]))}
+            key={`${i}-${n}`}
+            onClick={() => onCite(Number(n))}
             className="mx-0.5 rounded border border-accent/70 px-1 text-xs font-semibold text-accent hover:bg-accent/15"
-            aria-label={`Show source ${m[1]}`}
+            aria-label={`Show source ${n}`}
           >
-            {m[1]}
+            {n}
           </button>
-        )
+        ))
       })}
     </p>
   )
@@ -103,20 +103,18 @@ function SourcePanel({ citations, active, setActive, confidence, data, answered 
   answered: boolean
 }) {
   const [contract, setContract] = useState<ContractDetail | null>(null)
-  const [full, setFull] = useState(false)
+  // The full-contract view belongs to one clause, so each new source opens on just the clause.
+  const [fullFor, setFullFor] = useState<number | null>(null)
   const markRef = useRef<HTMLElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const cite = citations[active]
+  const full = !!cite && fullFor === cite.chunk_id
+  const setFull = (on: boolean) => setFullFor(on && cite ? cite.chunk_id : null)
 
   useEffect(() => {
     if (!cite) return
     if (contract?.id !== cite.contract_id) api.contract(cite.contract_id).then(setContract)
   }, [cite, contract?.id])
-
-  // Each new source opens on just the cited clause.
-  useEffect(() => {
-    setFull(false)
-  }, [cite])
 
   // In the full view, scroll only the text panel to the clause (scrollIntoView would also scroll the page).
   useEffect(() => {
@@ -274,7 +272,7 @@ export default function Chat() {
   const cuad = contracts.filter((c) => c.source === 'cuad')
 
   return (
-    <div className="grid min-h-0 flex-1 gap-5 lg:h-[calc(100vh-7.5rem)] lg:flex-none lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:grid-rows-[minmax(0,1fr)]">
+    <div className="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)] gap-5 lg:h-[calc(100vh-7.5rem)] lg:flex-none lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:grid-rows-[minmax(0,1fr)]">
       <section className="card flex min-h-[70vh] flex-col lg:min-h-0">
         <div className="flex flex-wrap items-end justify-between gap-3 p-6 pb-2">
           <div>

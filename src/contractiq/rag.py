@@ -47,6 +47,8 @@ SQL_PROMPT = """Write one PostgreSQL SELECT query that answers the question.
 Tables:
 {schema}
 Rules: SELECT only. Match supplier names with ILIKE. Today is {today}. Return at most {limit} rows.
+Only select values that come from the tables; never add made-up constants (e.g. no `1000 AS penalty`).
+If the question asks to change, delete or add data, still only read: select the matching rows.
 Supplier names (English / Arabic): {suppliers}
 Question: {q}"""
 
@@ -54,7 +56,14 @@ ANSWER_SYSTEM = """You answer questions about supplier contracts for a procureme
 Use ONLY the numbered sources and the database result provided. After every fact taken from a
 source, cite it like [1] or [2]. Facts from the database result need no citation marker; never
 write markers like [Database result]. If the sources don't contain the answer, say so plainly
-instead of guessing. Reply in the same language as the question. Be concise: 1-4 sentences."""
+instead of guessing. You can only READ contracts and records: if asked to delete, change, add,
+approve or send anything, say you can't do that, and never claim an action was taken.
+Reply in the same language as the question. Be concise: 1-4 sentences."""
+
+
+def cited_numbers(text: str) -> set[int]:
+    """Source numbers cited in an answer, whether written [1][2], [1, 2] or [1،2]."""
+    return {int(n) for group in re.findall(r"\[([\d\s,،]+)\]", text) for n in re.findall(r"\d+", group)}
 
 
 def normalize_ar(text: str) -> str:
@@ -74,13 +83,15 @@ def detect_contract(conn, question: str) -> int | None:
     return None
 
 
-def run_sql(conn, question: str) -> dict:
-    names = ", ".join(f"{s.name} / {s.name_ar}" for s in SUPPLIERS)
-    sql = generate(SQL_PROMPT.format(schema=SCHEMA_FOR_SQL, today=date(2026, 10, 24),
-                                     limit=SQL_ROW_LIMIT, suppliers=names, q=question), schema=SQL).sql
-    sql = sql.strip().rstrip(";")
-    if not re.match(r"(?is)^\s*(select|with)\b", sql) or ";" in sql:
-        return {"sql": sql, "error": "Only single SELECT queries are allowed."}
+def clean_select(sql: str) -> str | None:
+    """The query with any trailing semicolon removed, or None unless it is a single SELECT/WITH."""
+    sql = sql.strip().rstrip(";").strip()
+    if not re.match(r"(?is)^(select|with)\b", sql) or ";" in sql:
+        return None
+    return sql
+
+
+def execute_readonly(conn, sql: str) -> dict:
     # Belt and braces: even a SELECT runs inside a read-only transaction with a timeout.
     with conn.transaction():
         conn.execute("SET TRANSACTION READ ONLY")
@@ -89,6 +100,16 @@ def run_sql(conn, question: str) -> dict:
         columns = [d.name for d in cur.description]
         rows = [[str(v) if v is not None else None for v in r] for r in cur.fetchmany(SQL_ROW_LIMIT)]
     return {"sql": sql, "columns": columns, "rows": rows}
+
+
+def run_sql(conn, question: str) -> dict:
+    names = ", ".join(f"{s.name} / {s.name_ar}" for s in SUPPLIERS)
+    raw = generate(SQL_PROMPT.format(schema=SCHEMA_FOR_SQL, today=date.today(),
+                                     limit=SQL_ROW_LIMIT, suppliers=names, q=question), schema=SQL).sql
+    sql = clean_select(raw)
+    if sql is None:
+        return {"sql": raw, "error": "Only single SELECT queries are allowed."}
+    return execute_readonly(conn, sql)
 
 
 def confidence(hits: list[Hit]) -> str:
@@ -127,7 +148,7 @@ def answer(question: str, contract_id: int | None = None) -> dict:
               f"Write the answer in {reply_in}.")
     text = generate(prompt, system=ANSWER_SYSTEM)
 
-    cited = {int(n) for n in re.findall(r"\[(\d+)\]", text)}
+    cited = cited_numbers(text)
     return {
         "question": question,
         "route": route,

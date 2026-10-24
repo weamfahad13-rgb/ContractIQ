@@ -9,22 +9,24 @@ from contractiq.db import apply_schema, connect
 
 
 def upsert_contract(conn, *, title, source, contract_type, language, text, supplier=None,
-                    start_date=None, end_date=None) -> int:
+                    supplier_ar=None, start_date=None, end_date=None) -> int:
     old = conn.execute("SELECT full_text FROM contracts WHERE title = %s", (title,)).fetchone()
     unchanged = old is not None and old[0] == text
     contract_id = conn.execute(
         """
-        INSERT INTO contracts (title, source, contract_type, language, supplier, start_date, end_date, full_text)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO contracts (title, source, contract_type, language, supplier, supplier_ar,
+                               start_date, end_date, full_text)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
         ON CONFLICT (title) DO UPDATE SET
             source = EXCLUDED.source, contract_type = EXCLUDED.contract_type,
             language = EXCLUDED.language, full_text = EXCLUDED.full_text,
             supplier = COALESCE(EXCLUDED.supplier, contracts.supplier),
+            supplier_ar = COALESCE(EXCLUDED.supplier_ar, contracts.supplier_ar),
             start_date = COALESCE(EXCLUDED.start_date, contracts.start_date),
             end_date = COALESCE(EXCLUDED.end_date, contracts.end_date)
         RETURNING id
         """,
-        (title, source, contract_type, language, supplier, start_date, end_date, text),
+        (title, source, contract_type, language, supplier, supplier_ar, start_date, end_date, text),
     ).fetchone()[0]
 
     if unchanged:  # keep existing chunks and their embeddings

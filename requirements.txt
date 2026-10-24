@@ -15,5 +15,9 @@ python-dotenv
 huggingface_hub
 pydantic
 
+# tests
+pytest
+httpx
+
 jupyter
 ipykernel

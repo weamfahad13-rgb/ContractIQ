@@ -4,6 +4,7 @@ export interface ContractSummary {
   id: number
   title: string
   supplier: string | null
+  supplier_ar: string | null
   contract_type: string
   language: 'en' | 'ar'
   source: 'cuad' | 'synthetic'
@@ -87,6 +88,10 @@ export const api = {
 export const GITHUB_URL = 'https://github.com/'
 
 export const isArabic = (text: string) => /[؀-ۿ]/.test(text)
+
+/** Same folding as the backend: أ/إ/آ→ا, ة→ه, ى→ي, no diacritics. */
+export const normalizeAr = (text: string) =>
+  text.replace(/[ً-ْـ]/g, '').replace(/[أإآ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي')
 
 export function formatDate(iso: string | null) {
   if (!iso) return '—'

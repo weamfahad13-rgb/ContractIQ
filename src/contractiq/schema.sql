@@ -30,6 +30,9 @@ CREATE TABLE IF NOT EXISTS chunks (
     UNIQUE (contract_id, ord)
 );
 
+-- Added after the first release; ADD COLUMN IF NOT EXISTS keeps existing databases working.
+ALTER TABLE contracts ADD COLUMN IF NOT EXISTS supplier_ar TEXT;
+
 CREATE INDEX IF NOT EXISTS chunks_tsv_idx ON chunks USING gin (tsv);
 CREATE INDEX IF NOT EXISTS chunks_embedding_idx ON chunks USING hnsw (embedding vector_cosine_ops);
 
