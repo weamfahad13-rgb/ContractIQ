@@ -117,6 +117,20 @@ def make_caption(tag: str, title: str, body: str) -> Image.Image:
     return img
 
 
+def caption_y(cap: Image.Image, top: bool, H: int) -> int:
+    return 60 if top else H - cap.height - 60
+
+
+def covers(focus, cam, cap: Image.Image, W, H) -> bool:
+    """True when the bottom caption would overlap the focused element on screen."""
+    if not focus:
+        return False
+    x0, y0 = to_screen(focus[:2], cam, W, H)
+    x1, y1 = to_screen((focus[0] + focus[2], focus[1] + focus[3]), cam, W, H)
+    cx0, cy0, cx1 = 60, H - cap.height - 60, 60 + cap.width
+    return x0 < cx1 and x1 > cx0 and y1 > cy0
+
+
 def with_alpha(img: Image.Image, a: float) -> Image.Image:
     if a >= 1:
         return img
@@ -316,6 +330,7 @@ def main() -> None:
     cam = full
     pos = None
     caption, cap_img, cap_since, old_cap, old_since = None, None, -10.0, None, -10.0
+    cap_top, old_top = False, False
     prev_frame = None
     t_start = 0.0
     written = 0
@@ -326,13 +341,22 @@ def main() -> None:
         pos_from = pos
         if s.get("cursor"):
             pos = s["cursor"]
-        if s.get("caption") and s["caption"] != caption:
-            old_cap, old_since = cap_img, t_start
-            caption, cap_img, cap_since = s["caption"], make_caption(*s["caption"]), t_start
-        if is_card:
-            old_cap, old_since = cap_img, t_start
-            caption, cap_img = None, None
+        new_caption = s.get("caption") and s["caption"] != caption
+        # Move the caption to the top when it would cover what the camera is showing.
+        top = cap_top
+        if (new_caption or caption) and not is_card:
+            img = make_caption(*s["caption"]) if new_caption else cap_img
+            top = covers(s.get("zoom") or s.get("cursor") and [*s["cursor"], 1, 1], target, img, W, H)
         fade = (s.get("transition") == "fade" or is_card) and prev_frame is not None
+        if new_caption or (cap_img is not None and top != cap_top):
+            old_cap, old_since, old_top = cap_img, t_start, cap_top
+            if new_caption:
+                caption, cap_img = s["caption"], make_caption(*s["caption"])
+            # Let the new scene finish fading in before its caption appears.
+            cap_since, cap_top = t_start + (FADE_S if fade else 0.0), top
+        if is_card:
+            old_cap, old_since, old_top = cap_img, t_start, cap_top
+            caption, cap_img = None, None
         move = 0 if is_card else min(CAMERA_S, max(s["dur"] * 0.8, 0.01))
         click_at = None
         if s.get("click") and pos:
@@ -350,12 +374,12 @@ def main() -> None:
             # caption: old one fades out, new one slides up and fades in
             if old_cap is not None and now - old_since < 0.25:
                 a = 1 - (now - old_since) / 0.25
-                frame.alpha_composite(with_alpha(old_cap, a), (60, H - old_cap.height - 60))
+                frame.alpha_composite(with_alpha(old_cap, a), (60, caption_y(old_cap, old_top, H)))
             if cap_img is not None:
                 k = ease((now - cap_since - 0.15) / 0.4)
                 if k > 0:
-                    frame.alpha_composite(with_alpha(cap_img, k),
-                                          (60, int(H - cap_img.height - 60 + 26 * (1 - k))))
+                    slide = int(26 * (1 - k)) * (-1 if cap_top else 1)
+                    frame.alpha_composite(with_alpha(cap_img, k), (60, caption_y(cap_img, cap_top, H) + slide))
             # cursor and click ripple
             if pos and not is_card:
                 p = pos

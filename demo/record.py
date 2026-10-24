@@ -44,8 +44,6 @@ CAPTIONS = {
              "Recall@5 on lawyer-labeled clauses, plus LLM-judged faithfulness of the answers."),
     "tradeoff": ("TRADE-OFFS", "Every step is measured",
                  "The reranker adds 3 points of accuracy for about 20x the time. A deliberate trade-off."),
-    "weak": ("NEXT STEPS", "Where it still struggles",
-             "Per-clause results show what to improve next, such as audit rights at 61%."),
 }
 
 
@@ -218,12 +216,6 @@ def main() -> None:
         b = sec.bounding_box()
         r.add(speed, 1.0, caption="tradeoff", transition="fade", sfx=["whoosh"])
         r.add(speed, 4.0, zoom=[b["x"] * SCALE, b["y"] * SCALE, b["width"] * SCALE, b["height"] * SCALE])
-
-        page.locator("h2", has_text="Results by clause type").scroll_into_view_if_needed()
-        page.wait_for_timeout(500)
-        table = r.shot()
-        r.add(table, 1.0, caption="weak", transition="fade", sfx=["whoosh"])
-        r.add(table, 3.4, zoom=r.box("table", nth=0, pad=20))
 
         browser.close()
 

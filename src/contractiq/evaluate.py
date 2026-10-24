@@ -96,7 +96,7 @@ def main() -> None:
         # Load both models before timing anything, so the first run isn't charged for it.
         retrieve(cases[0]["en"], k=K, mode="rerank", contract_id=cases[0]["contract_id"], conn=conn)
         runs = []
-        for mode in ("vector", "hybrid", "rerank"):
+        for mode in ("vector", "hybrid", "rerank", "fusion"):
             for lang in ("en", "ar"):
                 r = run(conn, cases, mode, lang)
                 runs.append(r)

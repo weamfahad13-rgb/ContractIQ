@@ -42,7 +42,7 @@ export interface ChatAnswer {
 }
 
 export interface RetrievalRun {
-  mode: 'vector' | 'hybrid' | 'rerank'
+  mode: 'vector' | 'hybrid' | 'rerank' | 'fusion'
   lang: 'en' | 'ar'
   n: number
   recall_at_k: number

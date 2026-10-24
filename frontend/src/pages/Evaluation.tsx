@@ -7,6 +7,7 @@ const VERSIONS = [
   { mode: 'vector', label: 'v1 Vector search' },
   { mode: 'hybrid', label: 'v2 Hybrid search' },
   { mode: 'rerank', label: 'v3 + Reranker' },
+  { mode: 'fusion', label: 'v4 + Rank fusion' },
 ] as const
 
 const toPct = (v: number) => Math.round(v * 1000) / 10
@@ -20,7 +21,7 @@ export default function Evaluation() {
 
   const runs = ev?.retrieval?.runs ?? []
   const run = (mode: string, lang: string) => runs.find((r) => r.mode === mode && r.lang === lang) as RetrievalRun | undefined
-  const best = { en: run('rerank', 'en'), ar: run('rerank', 'ar') }
+  const best = { en: run('fusion', 'en'), ar: run('fusion', 'ar') }
   const k = ev?.retrieval?.k ?? 5
 
   const cards = [

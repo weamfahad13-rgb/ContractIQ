@@ -28,7 +28,7 @@ function Github({ className }: { className?: string }) {
 }
 
 function bestRun(ev: Evaluation | null, lang: 'en' | 'ar') {
-  return ev?.retrieval?.runs.find((r) => r.mode === 'rerank' && r.lang === lang)
+  return ev?.retrieval?.runs.find((r) => r.mode === 'fusion' && r.lang === lang)
 }
 
 export default function Landing() {

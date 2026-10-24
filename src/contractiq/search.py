@@ -6,7 +6,7 @@ from typing import Literal
 from contractiq.db import connect
 from contractiq.models import embed, rerank_scores
 
-Mode = Literal["vector", "hybrid", "rerank"]
+Mode = Literal["vector", "hybrid", "rerank", "fusion"]
 
 CANDIDATES = 20  # how many results each search contributes before fusion / reranking
 RRF_K = 60
@@ -79,7 +79,7 @@ def rrf(*ranked_lists: list[Hit]) -> list[Hit]:
     return sorted(fused.values(), key=lambda h: h.score, reverse=True)
 
 
-def retrieve(query: str, k: int = 5, mode: Mode = "rerank", contract_id: int | None = None,
+def retrieve(query: str, k: int = 5, mode: Mode = "fusion", contract_id: int | None = None,
              conn=None) -> list[Hit]:
     own = conn is None
     conn = conn or connect()
@@ -96,7 +96,17 @@ def retrieve(query: str, k: int = 5, mode: Mode = "rerank", contract_id: int | N
         scores = rerank_scores(query, [f"{h.heading}\n{h.text}" for h in candidates])
         for h, s in zip(candidates, scores):
             h.score = s
-        return sorted(candidates, key=lambda h: h.score, reverse=True)[:k]
+        reranked = sorted(candidates, key=lambda h: h.score, reverse=True)
+        if mode == "rerank":
+            return reranked[:k]
+
+        # "fusion": the reranker alone sometimes buries a clause that hybrid search ranked first
+        # (it happened in 7 of 21 audit-rights misses), so combine both rankings with RRF.
+        # h.score stays the reranker probability, which the confidence label reads.
+        rerank_rank = {h.chunk_id: i for i, h in enumerate(reranked, start=1)}
+        hybrid_rank = {h.chunk_id: i for i, h in enumerate(candidates, start=1)}
+        return sorted(candidates, key=lambda h: 1 / (RRF_K + rerank_rank[h.chunk_id])
+                      + 1 / (RRF_K + hybrid_rank[h.chunk_id]), reverse=True)[:k]
     finally:
         if own:
             conn.close()
