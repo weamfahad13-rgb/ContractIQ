@@ -106,7 +106,7 @@ function SourcePanel({ citations, active, setActive, confidence }: {
     return (
       <div className="flex h-full flex-col items-center justify-center gap-4 p-6 text-center">
         <img src="/mascots/mascot-chat.webp" alt="" className="h-64 object-contain" />
-        <p className="max-w-xs text-muted">Ask a question and the cited clause will show up here, highlighted in the contract.</p>
+        <p className="max-w-xs text-muted">Ask a question and the clause behind the answer will show up here.</p>
       </div>
     )
   }
@@ -139,7 +139,9 @@ function SourcePanel({ citations, active, setActive, confidence }: {
           <Loader2 className="h-5 w-5 animate-spin text-muted" aria-label="Loading contract" />
         ) : !full ? (
           <div className="space-y-4">
-            <p className="rounded-xl bg-mark p-4 leading-7 text-ink-950">{squash(text.slice(cite.start_char, cite.end_char)).trim()}</p>
+            <p className="rounded-xl border border-line-strong bg-ink-900/60 p-4 leading-7 text-slate-200">
+              {squash(text.slice(cite.start_char, cite.end_char)).trim()}
+            </p>
             <button onClick={() => setFull(true)} className="text-sm whitespace-normal text-accent hover:underline">
               Show in full contract
             </button>
