@@ -44,11 +44,10 @@ function AnswerText({ text, onCite }: { text: string; onCite: (n: number) => voi
 }
 
 function DataTable({ data }: { data: NonNullable<ChatAnswer['data']> }) {
-  const [showSql, setShowSql] = useState(false)
   if (data.error) return <p className="text-sm text-rose-300">Couldn't query the procurement data: {data.error}</p>
   if (!data.rows?.length) return <p className="text-sm text-muted">The query returned no rows.</p>
   return (
-    <div className="mt-3 space-y-2">
+    <div className="mt-3">
       <div className="overflow-x-auto rounded-lg border border-line">
         <table className="w-full text-left text-sm">
           <thead className="bg-ink-850 text-muted">
@@ -63,19 +62,44 @@ function DataTable({ data }: { data: NonNullable<ChatAnswer['data']> }) {
           </tbody>
         </table>
       </div>
-      <button onClick={() => setShowSql(!showSql)} className="text-xs text-accent hover:underline">
-        {showSql ? 'Hide query' : 'Show query'}
-      </button>
-      {showSql && <pre className="overflow-x-auto rounded-lg bg-ink-950 p-3 text-xs text-slate-300">{data.sql}</pre>}
     </div>
   )
 }
 
-function SourcePanel({ citations, active, setActive, confidence }: {
+function RecordsSource({ data }: { data: NonNullable<ChatAnswer['data']> }) {
+  return (
+    <div className="flex h-full min-h-0 flex-col">
+      <div className="flex items-start gap-3 border-b border-line p-5">
+        <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-line bg-ink-850">
+          <Database className="h-6 w-6 text-violet-300" aria-hidden />
+        </div>
+        <div className="min-w-0 flex-1">
+          <p className="font-semibold">Purchase-order records</p>
+          <p className="text-sm text-muted">Computed from the procurement database, not from a contract clause</p>
+        </div>
+      </div>
+      <div className="min-h-0 flex-1 space-y-4 overflow-y-auto p-5 text-sm">
+        {data.error ? (
+          <p className="text-rose-300">The query failed: {data.error}</p>
+        ) : (
+          <>
+            <p className="text-muted">{data.rows?.length ?? 0} row{data.rows?.length === 1 ? '' : 's'} returned by this query:</p>
+            <pre className="overflow-x-auto rounded-xl border border-line-strong bg-ink-950 p-4 text-xs leading-5 whitespace-pre-wrap text-slate-300">
+              {data.sql}
+            </pre>
+          </>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function SourcePanel({ citations, active, setActive, confidence, data }: {
   citations: Citation[]
   active: number
   setActive: (i: number) => void
   confidence?: ChatAnswer['confidence']
+  data?: ChatAnswer['data']
 }) {
   const [contract, setContract] = useState<ContractDetail | null>(null)
   const [full, setFull] = useState(false)
@@ -101,6 +125,8 @@ function SourcePanel({ citations, active, setActive, confidence }: {
     const offset = mark.getBoundingClientRect().top - box.getBoundingClientRect().top
     box.scrollTo({ top: box.scrollTop + offset - 24 })
   }, [contract, cite, full])
+
+  if (!cite && data) return <RecordsSource data={data} />
 
   if (!cite) {
     return (
@@ -215,7 +241,7 @@ export default function Chat() {
       setMessages((m) => {
         const next = [...m, { role: 'assistant' as const, answer }]
         const firstCited = answer.citations.findIndex((c) => c.cited)
-        if (answer.citations.length) setFocus({ msg: next.length - 1, idx: Math.max(0, firstCited) })
+        setFocus({ msg: next.length - 1, idx: Math.max(0, firstCited) })
         return next
       })
     } catch (e) {
@@ -386,6 +412,7 @@ export default function Chat() {
             active={focus?.idx ?? 0}
             setActive={(idx) => focus && setFocus({ ...focus, idx })}
             confidence={focusedAnswer?.confidence}
+            data={focusedAnswer?.data}
           />
         </div>
       </aside>

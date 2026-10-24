@@ -226,6 +226,8 @@ def purchase_orders(s: Supplier, rng: random.Random) -> list[tuple]:
         else:
             delay = rng.randint(1, 20) if rng.random() < s.late_rate else -rng.randint(0, 2)
             delivered, status = promised + timedelta(days=delay), "delivered"
+            if delivered > today:  # late and not arrived yet: still open, not delivered in the future
+                delivered, status = None, "open"
         orders.append((f"PO-{s.number}-{i:03d}", d, promised, delivered, amount, status))
         d += timedelta(days=rng.randint(20, 40))
         i += 1

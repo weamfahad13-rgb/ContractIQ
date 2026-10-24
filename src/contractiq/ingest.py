@@ -10,6 +10,8 @@ from contractiq.db import apply_schema, connect
 
 def upsert_contract(conn, *, title, source, contract_type, language, text, supplier=None,
                     start_date=None, end_date=None) -> int:
+    old = conn.execute("SELECT full_text FROM contracts WHERE title = %s", (title,)).fetchone()
+    unchanged = old is not None and old[0] == text
     contract_id = conn.execute(
         """
         INSERT INTO contracts (title, source, contract_type, language, supplier, start_date, end_date, full_text)
@@ -25,6 +27,8 @@ def upsert_contract(conn, *, title, source, contract_type, language, text, suppl
         (title, source, contract_type, language, supplier, start_date, end_date, text),
     ).fetchone()[0]
 
+    if unchanged:  # keep existing chunks and their embeddings
+        return contract_id
     # Re-chunking invalidates old chunks (and their embeddings).
     conn.execute("DELETE FROM chunks WHERE contract_id = %s", (contract_id,))
     with conn.cursor() as cur:
