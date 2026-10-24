@@ -1,5 +1,5 @@
 {
-  "evaluated_at": "2026-10-24T02:08:01+00:00",
+  "evaluated_at": "2026-10-24T18:00:53+00:00",
   "k": 5,
   "n_questions": 675,
   "categories": [
@@ -23,7 +23,7 @@
       "n": 675,
       "recall_at_k": 0.8756,
       "mrr": 0.7318,
-      "avg_latency_ms": 86.4,
+      "avg_latency_ms": 28.9,
       "per_category": {
         "Anti-Assignment": 0.9306,
         "Audit Rights": 0.7778,
@@ -172,7 +172,7 @@
       "n": 675,
       "recall_at_k": 0.843,
       "mrr": 0.6835,
-      "avg_latency_ms": 29.0,
+      "avg_latency_ms": 25.4,
       "per_category": {
         "Anti-Assignment": 0.9167,
         "Audit Rights": 0.6852,
@@ -321,7 +321,7 @@
       "n": 675,
       "recall_at_k": 0.8548,
       "mrr": 0.6785,
-      "avg_latency_ms": 31.3,
+      "avg_latency_ms": 29.1,
       "per_category": {
         "Anti-Assignment": 0.9861,
         "Audit Rights": 0.7593,
@@ -470,7 +470,7 @@
       "n": 675,
       "recall_at_k": 0.843,
       "mrr": 0.6835,
-      "avg_latency_ms": 30.3,
+      "avg_latency_ms": 29.8,
       "per_category": {
         "Anti-Assignment": 0.9167,
         "Audit Rights": 0.6852,
@@ -619,7 +619,7 @@
       "n": 675,
       "recall_at_k": 0.9052,
       "mrr": 0.8033,
-      "avg_latency_ms": 456.0,
+      "avg_latency_ms": 569.5,
       "per_category": {
         "Anti-Assignment": 1.0,
         "Audit Rights": 0.6111,
@@ -768,7 +768,7 @@
       "n": 675,
       "recall_at_k": 0.8489,
       "mrr": 0.7105,
-      "avg_latency_ms": 423.4,
+      "avg_latency_ms": 707.8,
       "per_category": {
         "Anti-Assignment": 0.8472,
         "Audit Rights": 0.6111,

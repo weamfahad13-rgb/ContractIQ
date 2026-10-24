@@ -93,6 +93,8 @@ def main() -> None:
     with connect() as conn:
         cases = build_cases(conn)
         print(f"{len(cases)} questions over {len({c['contract_id'] for c in cases})} contracts")
+        # Load both models before timing anything, so the first run isn't charged for it.
+        retrieve(cases[0]["en"], k=K, mode="rerank", contract_id=cases[0]["contract_id"], conn=conn)
         runs = []
         for mode in ("vector", "hybrid", "rerank"):
             for lang in ("en", "ar"):

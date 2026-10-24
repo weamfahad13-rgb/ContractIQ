@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
+import {
+  Bar, BarChart, CartesianGrid, LabelList, Legend, ResponsiveContainer, Scatter, ScatterChart, Tooltip, XAxis, YAxis, ZAxis,
+} from 'recharts'
+import type { LabelProps } from 'recharts'
 import { FileCheck2, Gauge, ListOrdered, Target } from 'lucide-react'
 
 import { api, pct, type Evaluation as Ev, type RetrievalRun } from '../api'
@@ -13,6 +16,18 @@ const VERSIONS = [
 const AXIS = { stroke: '#9fb3c8', fontSize: 12 }
 const TOOLTIP = { contentStyle: { background: '#0e2140', border: '1px solid #1e3a5f', borderRadius: 8 } }
 const toPct = (v: number) => Math.round(v * 1000) / 10
+
+// v1 and v2 take about the same time and sit almost on top of each other, so v2's label goes
+// below its point and the others above.
+function PointLabel(props: LabelProps) {
+  const x = Number(props.x) || 0
+  const y = Number(props.y) || 0
+  return (
+    <text x={x} y={y + (props.value === 'v2' ? 22 : -12)} fill="#e2e8f0" fontSize={12} textAnchor="middle">
+      {props.value}
+    </text>
+  )
+}
 
 export default function Evaluation() {
   const [ev, setEv] = useState<Ev | null>(null)
@@ -45,6 +60,12 @@ export default function Evaluation() {
     English: toPct(run(v.mode, 'en')?.recall_at_k ?? 0),
     Arabic: toPct(run(v.mode, 'ar')?.recall_at_k ?? 0),
   }))
+  // One point per version and language: how long a question takes vs. how often it finds the clause.
+  const tradeoff = (lang: 'en' | 'ar') =>
+    VERSIONS.flatMap((v) => {
+      const r = run(v.mode, lang)
+      return r ? [{ name: v.label.split(' ')[0], ms: Math.round(r.avg_latency_ms), recall: toPct(r.recall_at_k) }] : []
+    })
   const categories = Object.keys(best.en?.per_category ?? {}).map((c) => ({
     category: c,
     en: best.en!.per_category[c],
@@ -97,20 +118,37 @@ export default function Evaluation() {
         </section>
 
         <section className="card relative p-6">
-          <h2 className="text-xl font-bold">Accuracy across versions</h2>
-          <p className="text-sm text-muted">Each step added to the retrieval pipeline</p>
+          <h2 className="text-xl font-bold">Accuracy vs. speed</h2>
+          <p className="text-sm text-muted">Recall@{k} against time per question for each version (axes zoomed: 60–100%, log time)</p>
           <div className="mt-4 flex h-72 gap-2">
             <div className="min-w-0 flex-1">
               <ResponsiveContainer>
-                <LineChart data={versions}>
+                <ScatterChart margin={{ top: 16, right: 16, bottom: 8 }}>
                   <CartesianGrid stroke="#1e3a5f" strokeDasharray="3 3" />
-                  <XAxis dataKey="name" {...AXIS} />
-                  <YAxis domain={[0, 100]} unit="%" {...AXIS} />
-                  <Tooltip {...TOOLTIP} formatter={(v) => `${v}%`} />
+                  <XAxis
+                    type="number"
+                    dataKey="ms"
+                    name="Time"
+                    unit=" ms"
+                    scale="log"
+                    domain={[10, 1000]}
+                    ticks={[10, 30, 100, 300, 1000]}
+                    {...AXIS}
+                  />
+                  <YAxis type="number" dataKey="recall" name="Recall" domain={[60, 100]} unit="%" {...AXIS} />
+                  <Tooltip
+                    {...TOOLTIP}
+                    cursor={{ strokeDasharray: '3 3' }}
+                    formatter={(v, name) => (name === 'Time' ? `${v} ms` : `${v}%`)}
+                  />
                   <Legend />
-                  <Line dataKey="English" stroke="#22d3ee" strokeWidth={2.5} dot={{ r: 5 }} />
-                  <Line dataKey="Arabic" stroke="#60a5fa" strokeWidth={2.5} dot={{ r: 5 }} />
-                </LineChart>
+                  <ZAxis range={[90, 90]} />
+                  <Scatter name="English" data={tradeoff('en')} fill="#22d3ee">
+                    <LabelList dataKey="name" content={PointLabel} />
+                  </Scatter>
+                  <Scatter name="Arabic" data={tradeoff('ar')} fill="#60a5fa" />
+
+                </ScatterChart>
               </ResponsiveContainer>
             </div>
             <img src="/mascots/mascot-evaluation.webp" alt="" className="hidden h-full w-auto object-contain xl:block" />

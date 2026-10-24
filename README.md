@@ -38,9 +38,9 @@ half of the lawyer-labeled span.
 
 | Version | Recall@5 EN | Recall@5 AR | MRR EN | Time / question |
 |---|---|---|---|---|
-| v1 Vector search | 87.6% | 84.3% | 0.732 | 86 ms |
-| v2 Hybrid (vector + keyword, RRF) | 85.5% | 84.3% | 0.678 | 31 ms |
-| v3 Hybrid + reranker | **90.5%** | **84.9%** | **0.803** | 456 ms |
+| v1 Vector search | 87.6% | 84.3% | 0.732 | 29 ms |
+| v2 Hybrid (vector + keyword, RRF) | 85.5% | 84.3% | 0.678 | 29 ms |
+| v3 Hybrid + reranker | **90.5%** | **84.9%** | **0.803** | 570 ms |
 
 What the numbers say:
 - **The reranker is the biggest win**: +3 points of recall and a much better first result (MRR 0.73 → 0.80).
@@ -49,7 +49,7 @@ What the numbers say:
   what finds supplier names and contract numbers in open questions, which CUAD doesn't test.
 - **Arabic questions work against English contracts**, about 5 points behind English. Keyword search
   can't help there (different scripts), so only the cross-lingual embeddings and the reranker do.
-- Running the reranker in fp16 cut its latency from 3.7 s to 0.46 s per question with identical recall.
+- Running the reranker in fp16 cut its latency from 3.7 s to about 0.5 s per question with identical recall. Hybrid search adds almost nothing over vector search (29 ms each); the reranker is where the time goes.
 
 **Answers.** 24 questions (16 CUAD in English and Arabic, 8 about the sample suppliers including two
 Text-to-SQL) run through the full pipeline and graded by an LLM judge:
