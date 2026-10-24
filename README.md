@@ -101,6 +101,17 @@ cd frontend && npm install && npm run dev   # http://localhost:5173
 
 `npm run build` puts the frontend in `frontend/dist`, which the API then serves at `http://localhost:8000`.
 
+## Tests
+
+```bash
+pytest tests          # 57 tests; the API/database ones need the Postgres container running
+```
+
+They cover the clause chunker (offsets, Arabic headings, fallbacks), the SQL guard (only a single
+SELECT gets through; writes fail inside the read-only transaction; slow queries time out),
+citation parsing, Arabic name matching, every API endpoint and its input validation, and that
+files outside the frontend build (like `.env`) can't be fetched through the static file route.
+
 ## Project layout
 
 ```
