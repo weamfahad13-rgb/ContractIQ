@@ -57,11 +57,18 @@ write markers like [Database result]. If the sources don't contain the answer, s
 instead of guessing. Reply in the same language as the question. Be concise: 1-4 sentences."""
 
 
+def normalize_ar(text: str) -> str:
+    """Fold common Arabic spelling variants (أ/إ/آ→ا, ة→ه, ى→ي) and strip diacritics."""
+    text = re.sub(r"[ً-ْـ]", "", text)
+    return text.translate(str.maketrans("أإآةى", "اااهي"))
+
+
 def detect_contract(conn, question: str) -> int | None:
     """If the question names one of the sample suppliers, scope retrieval to its contract."""
     q = question.lower()
+    q_ar = normalize_ar(question)
     for s in SUPPLIERS:
-        if s.name.lower() in q or s.name_ar in question:
+        if s.name.lower() in q or normalize_ar(s.name_ar) in q_ar:
             row = conn.execute("SELECT id FROM contracts WHERE supplier = %s", (s.name,)).fetchone()
             return row[0] if row else None
     return None
