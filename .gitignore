@@ -1,0 +1,22 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
+
+# Downloaded datasets (re-downloadable, too large for git)
+data/raw/
+
+# Editors / OS
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
+.claude/
+
+# Build artifacts
+*.egg-info/
+data/eval/answers_progress.json

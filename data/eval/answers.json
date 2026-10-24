@@ -1,0 +1,250 @@
+{
+  "evaluated_at": "2026-10-24T17:04:54+00:00",
+  "n": 24,
+  "faithfulness": 1.0,
+  "relevance": 1.0,
+  "not_found_rate": 0.125,
+  "avg_latency_ms": 7295,
+  "samples": [
+    {
+      "question": "هل يوجد حد أقصى للمسؤولية؟",
+      "contract_id": 44,
+      "answer": "نعم، توجد مسؤولية قصوى للمطور بموجب العقد، وهي تقتصر صراحةً على الأقل بين مبلغ المدفوعات التي تم دفعها خلال فترة ستة أشهر التي تسبق سبب المطالبة مباشرة أو خمسمائة ألف دولار (500,000 دولار) [1].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer accurately states that there is a maximum liability and correctly cites the limits described in source [1].",
+      "latency_ms": 23836
+    },
+    {
+      "question": "Is there a minimum purchase or order commitment?",
+      "contract_id": 22,
+      "answer": "Yes, there is a minimum purchase requirement: Bellicum's aggregate purchases in any Calendar Year must be at least [...***...]% of the Rolling Monthly Forecast at the beginning of that year or €[...***...] Euros, whichever is higher (subject to specific adjustments for Calendar Year 2019 and unless modified in a product's Module) [1, 2]. Additionally, Purchase Orders are subject to reasonable minimum order size requirements that may vary by product type [5].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer accurately states the minimum purchase and minimum order requirements based on sections 5.6 and 6.5/product purchase order terms provided in the sources.",
+      "latency_ms": 1887
+    },
+    {
+      "question": "When does this agreement expire?",
+      "contract_id": 55,
+      "answer": "The agreement has an initial term of two years from the Effective Date of December 8, 2005 [1, 2]. It includes automatic annual renewals thereafter unless either party provides a sixty-day notice of termination prior to the renewal date or the agreement is otherwise terminated [1].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer accurately uses the sources to state the initial term of two years from the Effective Date of December 8, 2005, and explains the automatic renewal and termination notice conditions.",
+      "latency_ms": 3833
+    },
+    {
+      "question": "How long is the warranty period?",
+      "contract_id": 95,
+      "answer": "The warranty period is defined as a period of [***] from the relevant Supplier's shipment of the Product [1].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer correctly identifies from source [1] that the warranty period is a period of [***] from the relevant Supplier's shipment of the Product.",
+      "latency_ms": 2789
+    },
+    {
+      "question": "ما القانون الذي يحكم هذه الاتفاقية؟",
+      "contract_id": 8,
+      "answer": "تحكم هذه الاتفاقية ويتم تفسيرها وفقاً لقانون ولاية أوهايو (Ohio law).",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer correctly identifies that the agreement is governed by Ohio law, as stated in source [1].",
+      "latency_ms": 3737
+    },
+    {
+      "question": "How long is the warranty period?",
+      "contract_id": 11,
+      "answer": "The provided sources do not contain information about the warranty period.",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The sources do not mention a warranty period, and the answer correctly states that the information is not provided in the sources.",
+      "latency_ms": 23440
+    },
+    {
+      "question": "Does the agreement renew automatically, and for how long?",
+      "contract_id": 77,
+      "answer": "Yes, the agreement automatically renews for successive additional periods of one (1) year each, provided that certain conditions are met (such as making guaranteed minimum purchases, agreeing in writing on purchase amounts and price discounts, and a lack of notice of non-renewal) [1].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer accurately states that the agreement automatically renews for successive one-year periods based on the provided sources and lists the correct conditions mentioned in Source [1].",
+      "latency_ms": 4541
+    },
+    {
+      "question": "Does the agreement renew automatically, and for how long?",
+      "contract_id": 14,
+      "answer": "Yes, the agreement renews automatically for additional two (2) year terms [1]. This happens unless either party gives notice of non-renewal at least 6 months prior to the expiration of the initial term or any renewal term [1].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer accurately states that the agreement renews automatically for additional two-year terms and details the notice requirements for non-renewal, all of which are fully supported by Source [1].",
+      "latency_ms": 9776
+    },
+    {
+      "question": "Is there a cap or limit on liability?",
+      "contract_id": 49,
+      "answer": "Yes, there are limits on liability in the agreement. The indemnifying party's liability shall not exceed the insurance coverage set out in Section 9.0 [4]. Additionally, liability for loss, damage, or delay to freight is limited to the party's contractual liability to its customers, which is $4.41 per kilogram ($2.00 per pound) unless a higher value is declared [3].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer accurately cites the sources indicating that there is a limit on liability tied to insurance coverage and specific per-kilogram/per-pound rates for freight.",
+      "latency_ms": 18320
+    },
+    {
+      "question": "هل يحق لأي طرف التنازل عن العقد أو نقله لطرف آخر؟",
+      "contract_id": 84,
+      "answer": "لا تتضمن المصادر المقدمة إجابة واضحة عما إذا كان يحق لأي طرف التنازل عن العقد أو نقله لطرف آخر.",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The sources do not mention whether a party has the right to assign or transfer the contract to another party, and the answer correctly states that the information is not provided in the sources.",
+      "latency_ms": 8563
+    },
+    {
+      "question": "What insurance must the parties maintain?",
+      "contract_id": 9,
+      "answer": "The Contractor must maintain insurance in full force and effect with insurers of recognized financial responsibility, in types and amounts generally deemed adequate for its business and in line with insurance maintained by similar companies [1].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer accurately states the requirements for the Contractor to maintain insurance as explicitly outlined in Source [1].",
+      "latency_ms": 10072
+    },
+    {
+      "question": "Is there an exclusivity obligation?",
+      "contract_id": 73,
+      "answer": "Yes, the appointment of the distributor is generally nonexclusive, allowing PPG Shanghai to make direct sales or appoint other distributors in the territory [1]. However, the distributor does have the exclusive right to sell the products to a specific customer, Beijing Sino-US Jinche Yingang Auto Technological Services Limited (the \"Auto Center\"), during the term of the agreement [1].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer accurately states that the general appointment is nonexclusive while noting the specific exclusive right to sell to the Auto Center, both of which are fully supported by source [1].",
+      "latency_ms": 9294
+    },
+    {
+      "question": "How long is the warranty period?",
+      "contract_id": 31,
+      "answer": "The product is warranted to be free from defects in material and workmanship for the period running from the date of manufacture to the expiry date set out on each unit of the product [1].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer accurately states the warranty period based on the provided source text.",
+      "latency_ms": 4840
+    },
+    {
+      "question": "What insurance must the parties maintain?",
+      "contract_id": 5,
+      "answer": "Each party must obtain and maintain commercial general liability insurance, including product liability insurance, with limits of not less than [***] per occurrence and in the aggregate to cover their indemnification obligations [1]. This insurance must be held with reputable and financially secure carriers having an A.M. Best Rating of A-VII or better, or through a reasonably satisfactory self-insurance program [1].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer accurately states the insurance requirements for the parties as outlined in source [1].",
+      "latency_ms": 2882
+    },
+    {
+      "question": "ما القانون الذي يحكم هذه الاتفاقية؟",
+      "contract_id": 13,
+      "answer": "تحكم هذه الاتفاقية وتفسر وفقاً للقوانين الموضوعية لولاية نيويورك، مع استثناء أحكام تنازع القوانين فيها واتفاقية الأمم المتحدة بشأن عقود بيع البضائع الدولية [1].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer accurately states that the agreement is governed by the substantive laws of the State of New York, excluding its conflict of law provisions and the UN CISG, directly supported by Source [1].",
+      "latency_ms": 17148
+    },
+    {
+      "question": "هل يحق لأي طرف التنازل عن العقد أو نقله لطرف آخر؟",
+      "contract_id": 60,
+      "answer": "لا، لا يحق لأي طرف التنازل عن أي من حقوقه أو واجباته بموجب العقد لأي طرف ثالث إلا بعد الحصول على موافقة خطية من الطرف الآخر [1].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer accurately states that no party is entitled to assign rights or duties to a third party without written consent from the other party, which directly answers the question and is fully supported by source [1].",
+      "latency_ms": 3235
+    },
+    {
+      "question": "What is the late delivery penalty for Al-Sharq Pharma?",
+      "contract_id": null,
+      "answer": "Al-Sharq Pharma must pay a penalty of 0.5% of the delayed shipment's value for each day of delay, which is capped at 10% of that value [1].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer accurately identifies Al-Sharq Pharma as the Supplier in the agreement and correctly cites the late delivery penalty of 0.5% per day capped at 10% from source [1].",
+      "latency_ms": 5698
+    },
+    {
+      "question": "ما غرامة التأخير في التسليم في عقد الخليج للمستلزمات الطبية؟",
+      "contract_id": null,
+      "answer": "غرامة التأخير في التسليم هي 0.3% من قيمة الشحنة المتأخرة عن كل يوم تأخير، بحد أقصى 8% من تلك القيمة [1].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer accurately states the delay penalty as 0.3% per day with a maximum of 8% based on source [1], which directly answers the question about the penalty for delayed delivery in the contract with Gulf Medical Supplies.",
+      "latency_ms": 5075
+    },
+    {
+      "question": "When does the Najd Distribution agreement expire?",
+      "contract_id": null,
+      "answer": "The Najd Distribution agreement expires on 14 December 2026, unless it is terminated earlier or automatically renewed [2].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer accurately states the expiration date of 14 December 2026 and mentions the conditions for termination and renewal based directly on the provided sources.",
+      "latency_ms": 3081
+    },
+    {
+      "question": "هل يتجدد عقد الرياض للخدمات اللوجستية تلقائياً؟",
+      "contract_id": null,
+      "answer": "نعم، يتجدد عقد الرياض للخدمات اللوجستية تلقائياً لمدد متتالية مدة كل منها سنة واحدة، ما لم يُخطر أحد الطرفين الآخر كتابياً بعدم رغبته في التجديد قبل تاريخ الانتهاء بـ 60 يوماً على الأقل [1].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "الإجابة دقيقة ومدعومة بالكامل بالمصدر [1] الذي يوضح أن العقد يتجدد تلقائياً للشروط المذكورة.",
+      "latency_ms": 1374
+    },
+    {
+      "question": "How many Red Sea Freight orders were delivered late?",
+      "contract_id": null,
+      "answer": "Red Sea Freight had 4 orders delivered late.",
+      "route": "data",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer correctly states that Red Sea Freight had 4 orders delivered late based on the database result.",
+      "latency_ms": 2889
+    },
+    {
+      "question": "What is the total value of purchase orders placed with Al-Sharq Pharma in 2026?",
+      "contract_id": null,
+      "answer": "The total value of purchase orders placed with Al-Sharq Pharma in 2026 is SAR 1,951,362.53.",
+      "route": "data",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer accurately reflects the total value provided in the database result for purchase orders placed with Al-Sharq Pharma in 2026.",
+      "latency_ms": 2402
+    },
+    {
+      "question": "Can we terminate the Emirates Cold Chain contract without cause, and with how much notice?",
+      "contract_id": null,
+      "answer": "Yes, either party can terminate the contract without cause (for convenience) by providing 60 days' written notice [1].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer correctly states that either party can terminate the contract without cause (for convenience) with 60 days' written notice, supported by source [1].",
+      "latency_ms": 2747
+    },
+    {
+      "question": "ما هو الحد الأدنى للالتزام السنوي مع النور للرعاية الصحية؟",
+      "contract_id": null,
+      "answer": "الحد الأدنى للالتزام السنوي مع النور للرعاية الصحية هو إصدار أوامر شراء لا تقل قيمتها الإجمالية عن 3,000,000 ريال سعودي في كل سنة تعاقدية [1].",
+      "route": "contracts",
+      "faithfulness": 1.0,
+      "relevant": true,
+      "reason": "The answer accurately states the minimum annual commitment of 3,000,000 SAR as specified in source [1].",
+      "latency_ms": 3626
+    }
+  ]
+}

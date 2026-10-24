@@ -1,0 +1,915 @@
+{
+  "evaluated_at": "2026-10-24T02:08:01+00:00",
+  "k": 5,
+  "n_questions": 675,
+  "categories": [
+    "Governing Law",
+    "Expiration Date",
+    "Renewal Term",
+    "Notice Period To Terminate Renewal",
+    "Anti-Assignment",
+    "Cap On Liability",
+    "Audit Rights",
+    "Minimum Commitment",
+    "Insurance",
+    "Warranty Duration",
+    "Termination For Convenience",
+    "Exclusivity"
+  ],
+  "runs": [
+    {
+      "mode": "vector",
+      "lang": "en",
+      "n": 675,
+      "recall_at_k": 0.8756,
+      "mrr": 0.7318,
+      "avg_latency_ms": 86.4,
+      "per_category": {
+        "Anti-Assignment": 0.9306,
+        "Audit Rights": 0.7778,
+        "Cap On Liability": 0.9048,
+        "Exclusivity": 0.75,
+        "Expiration Date": 0.9286,
+        "Governing Law": 0.9412,
+        "Insurance": 0.9184,
+        "Minimum Commitment": 0.7037,
+        "Notice Period To Terminate Renewal": 0.9756,
+        "Renewal Term": 1.0,
+        "Termination For Convenience": 0.7632,
+        "Warranty Duration": 0.7556
+      },
+      "failures": [
+        {
+          "question": "How long is the warranty period?",
+          "category": "Warranty Duration",
+          "contract": "VERICELCORP_08_06_2019-EX-10.10-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "FuseMedicalInc_20190321_10-K_EX-10.43_11575454_EX-10.43_Distributor Agreement"
+        },
+        {
+          "question": "Is there a minimum purchase or order commitment?",
+          "category": "Minimum Commitment",
+          "contract": "ASPIRITYHOLDINGSLLC_05_07_2012-EX-10.6-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "ASPIRITYHOLDINGSLLC_05_07_2012-EX-10.6-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "OASYSMOBILE,INC_07_05_2001-EX-10.17-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "Which law governs this agreement?",
+          "category": "Governing Law",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "Is there an exclusivity obligation?",
+          "category": "Exclusivity",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "Is there a minimum purchase or order commitment?",
+          "category": "Minimum Commitment",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "How long is the warranty period?",
+          "category": "Warranty Duration",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "Which law governs this agreement?",
+          "category": "Governing Law",
+          "contract": "UpjohnInc_20200121_10-12G_EX-2.6_11948692_EX-2.6_Manufacturing Agreement_ Supply Agreement"
+        },
+        {
+          "question": "How long is the warranty period?",
+          "category": "Warranty Duration",
+          "contract": "UpjohnInc_20200121_10-12G_EX-2.6_11948692_EX-2.6_Manufacturing Agreement_ Supply Agreement"
+        },
+        {
+          "question": "Is there a cap or limit on liability?",
+          "category": "Cap On Liability",
+          "contract": "Antares Pharma, Inc. - Manufacturing Agreement"
+        },
+        {
+          "question": "Is there an exclusivity obligation?",
+          "category": "Exclusivity",
+          "contract": "NANOPHASETECHNOLOGIESCORP_11_01_2005-EX-99.1-DISTRIBUTOR AGREEMENT"
+        },
+        {
+          "question": "Is there a minimum purchase or order commitment?",
+          "category": "Minimum Commitment",
+          "contract": "NANOPHASETECHNOLOGIESCORP_11_01_2005-EX-99.1-DISTRIBUTOR AGREEMENT"
+        },
+        {
+          "question": "Is there an exclusivity obligation?",
+          "category": "Exclusivity",
+          "contract": "PenntexMidstreamPartnersLp_20150416_S-1A_EX-10.4_9042833_EX-10.4_Transportation Agreement"
+        },
+        {
+          "question": "Can a party terminate the agreement without cause?",
+          "category": "Termination For Convenience",
+          "contract": "BELLICUMPHARMACEUTICALS,INC_05_07_2019-EX-10.1-Supply Agreement"
+        },
+        {
+          "question": "How long is the warranty period?",
+          "category": "Warranty Duration",
+          "contract": "BELLICUMPHARMACEUTICALS,INC_05_07_2019-EX-10.1-Supply Agreement"
+        },
+        {
+          "question": "When does this agreement expire?",
+          "category": "Expiration Date",
+          "contract": "InmodeLtd_20190729_F-1A_EX-10.9_11743243_EX-10.9_Manufacturing Agreement"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "InmodeLtd_20190729_F-1A_EX-10.9_11743243_EX-10.9_Manufacturing Agreement"
+        },
+        {
+          "question": "When does this agreement expire?",
+          "category": "Expiration Date",
+          "contract": "GRANTIERRAENERGYINC_05_07_2012-EX-10.6-TRANSPORTATION CONTRACT"
+        },
+        {
+          "question": "Which law governs this agreement?",
+          "category": "Governing Law",
+          "contract": "GRANTIERRAENERGYINC_05_07_2012-EX-10.6-TRANSPORTATION CONTRACT"
+        },
+        {
+          "question": "Is there a cap or limit on liability?",
+          "category": "Cap On Liability",
+          "contract": "GRANTIERRAENERGYINC_05_07_2012-EX-10.6-TRANSPORTATION CONTRACT"
+        },
+        {
+          "question": "How long is the warranty period?",
+          "category": "Warranty Duration",
+          "contract": "GRANTIERRAENERGYINC_05_07_2012-EX-10.6-TRANSPORTATION CONTRACT"
+        },
+        {
+          "question": "What insurance must the parties maintain?",
+          "category": "Insurance",
+          "contract": "GRANTIERRAENERGYINC_05_07_2012-EX-10.6-TRANSPORTATION CONTRACT"
+        }
+      ]
+    },
+    {
+      "mode": "vector",
+      "lang": "ar",
+      "n": 675,
+      "recall_at_k": 0.843,
+      "mrr": 0.6835,
+      "avg_latency_ms": 29.0,
+      "per_category": {
+        "Anti-Assignment": 0.9167,
+        "Audit Rights": 0.6852,
+        "Cap On Liability": 0.8889,
+        "Exclusivity": 0.5556,
+        "Expiration Date": 0.9286,
+        "Governing Law": 0.9176,
+        "Insurance": 0.898,
+        "Minimum Commitment": 0.6852,
+        "Notice Period To Terminate Renewal": 0.9512,
+        "Renewal Term": 0.9815,
+        "Termination For Convenience": 0.8684,
+        "Warranty Duration": 0.6222
+      },
+      "failures": [
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "NICELTD_06_26_2003-EX-4.5-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "ما مدة الضمان؟",
+          "category": "Warranty Duration",
+          "contract": "NICELTD_06_26_2003-EX-4.5-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "ما مدة الضمان؟",
+          "category": "Warranty Duration",
+          "contract": "VERICELCORP_08_06_2019-EX-10.10-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "FuseMedicalInc_20190321_10-K_EX-10.43_11575454_EX-10.43_Distributor Agreement"
+        },
+        {
+          "question": "هل يوجد حد أدنى ملزم للشراء أو الطلب؟",
+          "category": "Minimum Commitment",
+          "contract": "ASPIRITYHOLDINGSLLC_05_07_2012-EX-10.6-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "ما التأمين الذي يجب على الأطراف الاحتفاظ به؟",
+          "category": "Insurance",
+          "contract": "ASPIRITYHOLDINGSLLC_05_07_2012-EX-10.6-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "ما القانون الذي يحكم هذه الاتفاقية؟",
+          "category": "Governing Law",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "هل يوجد التزام بالحصرية؟",
+          "category": "Exclusivity",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "هل يوجد حد أدنى ملزم للشراء أو الطلب؟",
+          "category": "Minimum Commitment",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "ما مدة الضمان؟",
+          "category": "Warranty Duration",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "كم مدة الإشعار المطلوبة لمنع تجديد العقد؟",
+          "category": "Notice Period To Terminate Renewal",
+          "contract": "UpjohnInc_20200121_10-12G_EX-2.6_11948692_EX-2.6_Manufacturing Agreement_ Supply Agreement"
+        },
+        {
+          "question": "ما القانون الذي يحكم هذه الاتفاقية؟",
+          "category": "Governing Law",
+          "contract": "UpjohnInc_20200121_10-12G_EX-2.6_11948692_EX-2.6_Manufacturing Agreement_ Supply Agreement"
+        },
+        {
+          "question": "ما مدة الضمان؟",
+          "category": "Warranty Duration",
+          "contract": "UpjohnInc_20200121_10-12G_EX-2.6_11948692_EX-2.6_Manufacturing Agreement_ Supply Agreement"
+        },
+        {
+          "question": "هل يوجد التزام بالحصرية؟",
+          "category": "Exclusivity",
+          "contract": "Antares Pharma, Inc. - Manufacturing Agreement"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "Antares Pharma, Inc. - Manufacturing Agreement"
+        },
+        {
+          "question": "هل يوجد حد أقصى للمسؤولية؟",
+          "category": "Cap On Liability",
+          "contract": "Antares Pharma, Inc. - Manufacturing Agreement"
+        },
+        {
+          "question": "هل يوجد التزام بالحصرية؟",
+          "category": "Exclusivity",
+          "contract": "NANOPHASETECHNOLOGIESCORP_11_01_2005-EX-99.1-DISTRIBUTOR AGREEMENT"
+        },
+        {
+          "question": "هل يوجد حد أدنى ملزم للشراء أو الطلب؟",
+          "category": "Minimum Commitment",
+          "contract": "NANOPHASETECHNOLOGIESCORP_11_01_2005-EX-99.1-DISTRIBUTOR AGREEMENT"
+        },
+        {
+          "question": "هل يوجد التزام بالحصرية؟",
+          "category": "Exclusivity",
+          "contract": "PenntexMidstreamPartnersLp_20150416_S-1A_EX-10.4_9042833_EX-10.4_Transportation Agreement"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "BELLRINGBRANDS,INC_02_07_2020-EX-10.18-MASTER SUPPLY AGREEMENT"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "BELLICUMPHARMACEUTICALS,INC_05_07_2019-EX-10.1-Supply Agreement"
+        },
+        {
+          "question": "ما مدة الضمان؟",
+          "category": "Warranty Duration",
+          "contract": "BELLICUMPHARMACEUTICALS,INC_05_07_2019-EX-10.1-Supply Agreement"
+        },
+        {
+          "question": "ما القانون الذي يحكم هذه الاتفاقية؟",
+          "category": "Governing Law",
+          "contract": "MARTINMIDSTREAMPARTNERSLP_01_23_2004-EX-10.3-TRANSPORTATION SERVICES AGREEMENT"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "InmodeLtd_20190729_F-1A_EX-10.9_11743243_EX-10.9_Manufacturing Agreement"
+        }
+      ]
+    },
+    {
+      "mode": "hybrid",
+      "lang": "en",
+      "n": 675,
+      "recall_at_k": 0.8548,
+      "mrr": 0.6785,
+      "avg_latency_ms": 31.3,
+      "per_category": {
+        "Anti-Assignment": 0.9861,
+        "Audit Rights": 0.7593,
+        "Cap On Liability": 0.9524,
+        "Exclusivity": 0.75,
+        "Expiration Date": 0.7619,
+        "Governing Law": 0.9059,
+        "Insurance": 0.9388,
+        "Minimum Commitment": 0.7593,
+        "Notice Period To Terminate Renewal": 0.878,
+        "Renewal Term": 0.9259,
+        "Termination For Convenience": 0.7368,
+        "Warranty Duration": 0.8
+      },
+      "failures": [
+        {
+          "question": "When does this agreement expire?",
+          "category": "Expiration Date",
+          "contract": "NICELTD_06_26_2003-EX-4.5-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "Does the agreement renew automatically, and for how long?",
+          "category": "Renewal Term",
+          "contract": "NICELTD_06_26_2003-EX-4.5-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "Can a party terminate the agreement without cause?",
+          "category": "Termination For Convenience",
+          "contract": "NICELTD_06_26_2003-EX-4.5-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "Does the agreement renew automatically, and for how long?",
+          "category": "Renewal Term",
+          "contract": "FuseMedicalInc_20190321_10-K_EX-10.43_11575454_EX-10.43_Distributor Agreement"
+        },
+        {
+          "question": "How much notice is needed to stop the agreement from renewing?",
+          "category": "Notice Period To Terminate Renewal",
+          "contract": "FuseMedicalInc_20190321_10-K_EX-10.43_11575454_EX-10.43_Distributor Agreement"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "FuseMedicalInc_20190321_10-K_EX-10.43_11575454_EX-10.43_Distributor Agreement"
+        },
+        {
+          "question": "Is there a minimum purchase or order commitment?",
+          "category": "Minimum Commitment",
+          "contract": "ASPIRITYHOLDINGSLLC_05_07_2012-EX-10.6-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "ASPIRITYHOLDINGSLLC_05_07_2012-EX-10.6-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "OASYSMOBILE,INC_07_05_2001-EX-10.17-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "Which law governs this agreement?",
+          "category": "Governing Law",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "Which law governs this agreement?",
+          "category": "Governing Law",
+          "contract": "UpjohnInc_20200121_10-12G_EX-2.6_11948692_EX-2.6_Manufacturing Agreement_ Supply Agreement"
+        },
+        {
+          "question": "How long is the warranty period?",
+          "category": "Warranty Duration",
+          "contract": "UpjohnInc_20200121_10-12G_EX-2.6_11948692_EX-2.6_Manufacturing Agreement_ Supply Agreement"
+        },
+        {
+          "question": "When does this agreement expire?",
+          "category": "Expiration Date",
+          "contract": "Antares Pharma, Inc. - Manufacturing Agreement"
+        },
+        {
+          "question": "Is there an exclusivity obligation?",
+          "category": "Exclusivity",
+          "contract": "NANOPHASETECHNOLOGIESCORP_11_01_2005-EX-99.1-DISTRIBUTOR AGREEMENT"
+        },
+        {
+          "question": "Is there a minimum purchase or order commitment?",
+          "category": "Minimum Commitment",
+          "contract": "NANOPHASETECHNOLOGIESCORP_11_01_2005-EX-99.1-DISTRIBUTOR AGREEMENT"
+        },
+        {
+          "question": "How long is the warranty period?",
+          "category": "Warranty Duration",
+          "contract": "NANOPHASETECHNOLOGIESCORP_11_01_2005-EX-99.1-DISTRIBUTOR AGREEMENT"
+        },
+        {
+          "question": "When does this agreement expire?",
+          "category": "Expiration Date",
+          "contract": "BELLICUMPHARMACEUTICALS,INC_05_07_2019-EX-10.1-Supply Agreement"
+        },
+        {
+          "question": "How long is the warranty period?",
+          "category": "Warranty Duration",
+          "contract": "BELLICUMPHARMACEUTICALS,INC_05_07_2019-EX-10.1-Supply Agreement"
+        },
+        {
+          "question": "Is there an exclusivity obligation?",
+          "category": "Exclusivity",
+          "contract": "AIRSPANNETWORKSINC_04_11_2000-EX-10.5-Distributor Agreement"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "AIRSPANNETWORKSINC_04_11_2000-EX-10.5-Distributor Agreement"
+        },
+        {
+          "question": "When does this agreement expire?",
+          "category": "Expiration Date",
+          "contract": "InmodeLtd_20190729_F-1A_EX-10.9_11743243_EX-10.9_Manufacturing Agreement"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "InmodeLtd_20190729_F-1A_EX-10.9_11743243_EX-10.9_Manufacturing Agreement"
+        },
+        {
+          "question": "When does this agreement expire?",
+          "category": "Expiration Date",
+          "contract": "GRANTIERRAENERGYINC_05_07_2012-EX-10.6-TRANSPORTATION CONTRACT"
+        },
+        {
+          "question": "Which law governs this agreement?",
+          "category": "Governing Law",
+          "contract": "GRANTIERRAENERGYINC_05_07_2012-EX-10.6-TRANSPORTATION CONTRACT"
+        }
+      ]
+    },
+    {
+      "mode": "hybrid",
+      "lang": "ar",
+      "n": 675,
+      "recall_at_k": 0.843,
+      "mrr": 0.6835,
+      "avg_latency_ms": 30.3,
+      "per_category": {
+        "Anti-Assignment": 0.9167,
+        "Audit Rights": 0.6852,
+        "Cap On Liability": 0.8889,
+        "Exclusivity": 0.5556,
+        "Expiration Date": 0.9286,
+        "Governing Law": 0.9176,
+        "Insurance": 0.898,
+        "Minimum Commitment": 0.6852,
+        "Notice Period To Terminate Renewal": 0.9512,
+        "Renewal Term": 0.9815,
+        "Termination For Convenience": 0.8684,
+        "Warranty Duration": 0.6222
+      },
+      "failures": [
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "NICELTD_06_26_2003-EX-4.5-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "ما مدة الضمان؟",
+          "category": "Warranty Duration",
+          "contract": "NICELTD_06_26_2003-EX-4.5-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "ما مدة الضمان؟",
+          "category": "Warranty Duration",
+          "contract": "VERICELCORP_08_06_2019-EX-10.10-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "FuseMedicalInc_20190321_10-K_EX-10.43_11575454_EX-10.43_Distributor Agreement"
+        },
+        {
+          "question": "هل يوجد حد أدنى ملزم للشراء أو الطلب؟",
+          "category": "Minimum Commitment",
+          "contract": "ASPIRITYHOLDINGSLLC_05_07_2012-EX-10.6-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "ما التأمين الذي يجب على الأطراف الاحتفاظ به؟",
+          "category": "Insurance",
+          "contract": "ASPIRITYHOLDINGSLLC_05_07_2012-EX-10.6-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "ما القانون الذي يحكم هذه الاتفاقية؟",
+          "category": "Governing Law",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "هل يوجد التزام بالحصرية؟",
+          "category": "Exclusivity",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "هل يوجد حد أدنى ملزم للشراء أو الطلب؟",
+          "category": "Minimum Commitment",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "ما مدة الضمان؟",
+          "category": "Warranty Duration",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "كم مدة الإشعار المطلوبة لمنع تجديد العقد؟",
+          "category": "Notice Period To Terminate Renewal",
+          "contract": "UpjohnInc_20200121_10-12G_EX-2.6_11948692_EX-2.6_Manufacturing Agreement_ Supply Agreement"
+        },
+        {
+          "question": "ما القانون الذي يحكم هذه الاتفاقية؟",
+          "category": "Governing Law",
+          "contract": "UpjohnInc_20200121_10-12G_EX-2.6_11948692_EX-2.6_Manufacturing Agreement_ Supply Agreement"
+        },
+        {
+          "question": "ما مدة الضمان؟",
+          "category": "Warranty Duration",
+          "contract": "UpjohnInc_20200121_10-12G_EX-2.6_11948692_EX-2.6_Manufacturing Agreement_ Supply Agreement"
+        },
+        {
+          "question": "هل يوجد التزام بالحصرية؟",
+          "category": "Exclusivity",
+          "contract": "Antares Pharma, Inc. - Manufacturing Agreement"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "Antares Pharma, Inc. - Manufacturing Agreement"
+        },
+        {
+          "question": "هل يوجد حد أقصى للمسؤولية؟",
+          "category": "Cap On Liability",
+          "contract": "Antares Pharma, Inc. - Manufacturing Agreement"
+        },
+        {
+          "question": "هل يوجد التزام بالحصرية؟",
+          "category": "Exclusivity",
+          "contract": "NANOPHASETECHNOLOGIESCORP_11_01_2005-EX-99.1-DISTRIBUTOR AGREEMENT"
+        },
+        {
+          "question": "هل يوجد حد أدنى ملزم للشراء أو الطلب؟",
+          "category": "Minimum Commitment",
+          "contract": "NANOPHASETECHNOLOGIESCORP_11_01_2005-EX-99.1-DISTRIBUTOR AGREEMENT"
+        },
+        {
+          "question": "هل يوجد التزام بالحصرية؟",
+          "category": "Exclusivity",
+          "contract": "PenntexMidstreamPartnersLp_20150416_S-1A_EX-10.4_9042833_EX-10.4_Transportation Agreement"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "BELLRINGBRANDS,INC_02_07_2020-EX-10.18-MASTER SUPPLY AGREEMENT"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "BELLICUMPHARMACEUTICALS,INC_05_07_2019-EX-10.1-Supply Agreement"
+        },
+        {
+          "question": "ما مدة الضمان؟",
+          "category": "Warranty Duration",
+          "contract": "BELLICUMPHARMACEUTICALS,INC_05_07_2019-EX-10.1-Supply Agreement"
+        },
+        {
+          "question": "ما القانون الذي يحكم هذه الاتفاقية؟",
+          "category": "Governing Law",
+          "contract": "MARTINMIDSTREAMPARTNERSLP_01_23_2004-EX-10.3-TRANSPORTATION SERVICES AGREEMENT"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "InmodeLtd_20190729_F-1A_EX-10.9_11743243_EX-10.9_Manufacturing Agreement"
+        }
+      ]
+    },
+    {
+      "mode": "rerank",
+      "lang": "en",
+      "n": 675,
+      "recall_at_k": 0.9052,
+      "mrr": 0.8033,
+      "avg_latency_ms": 456.0,
+      "per_category": {
+        "Anti-Assignment": 1.0,
+        "Audit Rights": 0.6111,
+        "Cap On Liability": 0.9524,
+        "Exclusivity": 0.8611,
+        "Expiration Date": 0.9405,
+        "Governing Law": 1.0,
+        "Insurance": 0.9184,
+        "Minimum Commitment": 0.8148,
+        "Notice Period To Terminate Renewal": 1.0,
+        "Renewal Term": 1.0,
+        "Termination For Convenience": 0.7895,
+        "Warranty Duration": 0.8222
+      },
+      "failures": [
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "VERICELCORP_08_06_2019-EX-10.10-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "How long is the warranty period?",
+          "category": "Warranty Duration",
+          "contract": "VERICELCORP_08_06_2019-EX-10.10-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "FuseMedicalInc_20190321_10-K_EX-10.43_11575454_EX-10.43_Distributor Agreement"
+        },
+        {
+          "question": "Is there a minimum purchase or order commitment?",
+          "category": "Minimum Commitment",
+          "contract": "ASPIRITYHOLDINGSLLC_05_07_2012-EX-10.6-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "ASPIRITYHOLDINGSLLC_05_07_2012-EX-10.6-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "Is there a minimum purchase or order commitment?",
+          "category": "Minimum Commitment",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "How long is the warranty period?",
+          "category": "Warranty Duration",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "How long is the warranty period?",
+          "category": "Warranty Duration",
+          "contract": "UpjohnInc_20200121_10-12G_EX-2.6_11948692_EX-2.6_Manufacturing Agreement_ Supply Agreement"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "Antares Pharma, Inc. - Manufacturing Agreement"
+        },
+        {
+          "question": "Is there a minimum purchase or order commitment?",
+          "category": "Minimum Commitment",
+          "contract": "NANOPHASETECHNOLOGIESCORP_11_01_2005-EX-99.1-DISTRIBUTOR AGREEMENT"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "BELLRINGBRANDS,INC_02_07_2020-EX-10.18-MASTER SUPPLY AGREEMENT"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "BELLICUMPHARMACEUTICALS,INC_05_07_2019-EX-10.1-Supply Agreement"
+        },
+        {
+          "question": "How long is the warranty period?",
+          "category": "Warranty Duration",
+          "contract": "MARTINMIDSTREAMPARTNERSLP_01_23_2004-EX-10.3-TRANSPORTATION SERVICES AGREEMENT"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "AIRSPANNETWORKSINC_04_11_2000-EX-10.5-Distributor Agreement"
+        },
+        {
+          "question": "When does this agreement expire?",
+          "category": "Expiration Date",
+          "contract": "InmodeLtd_20190729_F-1A_EX-10.9_11743243_EX-10.9_Manufacturing Agreement"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "InmodeLtd_20190729_F-1A_EX-10.9_11743243_EX-10.9_Manufacturing Agreement"
+        },
+        {
+          "question": "When does this agreement expire?",
+          "category": "Expiration Date",
+          "contract": "GRANTIERRAENERGYINC_05_07_2012-EX-10.6-TRANSPORTATION CONTRACT"
+        },
+        {
+          "question": "Is there a cap or limit on liability?",
+          "category": "Cap On Liability",
+          "contract": "GRANTIERRAENERGYINC_05_07_2012-EX-10.6-TRANSPORTATION CONTRACT"
+        },
+        {
+          "question": "How long is the warranty period?",
+          "category": "Warranty Duration",
+          "contract": "GRANTIERRAENERGYINC_05_07_2012-EX-10.6-TRANSPORTATION CONTRACT"
+        },
+        {
+          "question": "What insurance must the parties maintain?",
+          "category": "Insurance",
+          "contract": "GRANTIERRAENERGYINC_05_07_2012-EX-10.6-TRANSPORTATION CONTRACT"
+        },
+        {
+          "question": "What insurance must the parties maintain?",
+          "category": "Insurance",
+          "contract": "FUSIONPHARMACEUTICALSINC_06_05_2020-EX-10.17-Supply Agreement - FUSION"
+        },
+        {
+          "question": "Is there a minimum purchase or order commitment?",
+          "category": "Minimum Commitment",
+          "contract": "ENERGYXXILTD_05_08_2015-EX-10.13-Transportation AGREEMENT"
+        },
+        {
+          "question": "Is there an exclusivity obligation?",
+          "category": "Exclusivity",
+          "contract": "ScansourceInc_20190822_10-K_EX-10.38_11793958_EX-10.38_Distributor Agreement1"
+        },
+        {
+          "question": "Does either party have the right to audit the other's books or records?",
+          "category": "Audit Rights",
+          "contract": "ScansourceInc_20190822_10-K_EX-10.38_11793958_EX-10.38_Distributor Agreement1"
+        }
+      ]
+    },
+    {
+      "mode": "rerank",
+      "lang": "ar",
+      "n": 675,
+      "recall_at_k": 0.8489,
+      "mrr": 0.7105,
+      "avg_latency_ms": 423.4,
+      "per_category": {
+        "Anti-Assignment": 0.8472,
+        "Audit Rights": 0.6111,
+        "Cap On Liability": 0.9524,
+        "Exclusivity": 0.6944,
+        "Expiration Date": 0.9167,
+        "Governing Law": 0.9765,
+        "Insurance": 0.8367,
+        "Minimum Commitment": 0.7037,
+        "Notice Period To Terminate Renewal": 0.9756,
+        "Renewal Term": 1.0,
+        "Termination For Convenience": 0.6842,
+        "Warranty Duration": 0.7778
+      },
+      "failures": [
+        {
+          "question": "ما التأمين الذي يجب على الأطراف الاحتفاظ به؟",
+          "category": "Insurance",
+          "contract": "LIMEENERGYCO_09_09_1999-EX-10-DISTRIBUTOR AGREEMENT"
+        },
+        {
+          "question": "ما مدة الضمان؟",
+          "category": "Warranty Duration",
+          "contract": "VERICELCORP_08_06_2019-EX-10.10-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "FuseMedicalInc_20190321_10-K_EX-10.43_11575454_EX-10.43_Distributor Agreement"
+        },
+        {
+          "question": "هل يوجد حد أدنى ملزم للشراء أو الطلب؟",
+          "category": "Minimum Commitment",
+          "contract": "ASPIRITYHOLDINGSLLC_05_07_2012-EX-10.6-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "ASPIRITYHOLDINGSLLC_05_07_2012-EX-10.6-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "OASYSMOBILE,INC_07_05_2001-EX-10.17-OUTSOURCING AGREEMENT"
+        },
+        {
+          "question": "هل يوجد التزام بالحصرية؟",
+          "category": "Exclusivity",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "هل يوجد حد أدنى ملزم للشراء أو الطلب؟",
+          "category": "Minimum Commitment",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "ما مدة الضمان؟",
+          "category": "Warranty Duration",
+          "contract": "MEDIWOUNDLTD_01_15_2014-EX-10.6-SUPPLY AGREEMENT"
+        },
+        {
+          "question": "كم مدة الإشعار المطلوبة لمنع تجديد العقد؟",
+          "category": "Notice Period To Terminate Renewal",
+          "contract": "UpjohnInc_20200121_10-12G_EX-2.6_11948692_EX-2.6_Manufacturing Agreement_ Supply Agreement"
+        },
+        {
+          "question": "ما القانون الذي يحكم هذه الاتفاقية؟",
+          "category": "Governing Law",
+          "contract": "UpjohnInc_20200121_10-12G_EX-2.6_11948692_EX-2.6_Manufacturing Agreement_ Supply Agreement"
+        },
+        {
+          "question": "هل يحق لأي طرف التنازل عن العقد أو نقله لطرف آخر؟",
+          "category": "Anti-Assignment",
+          "contract": "UpjohnInc_20200121_10-12G_EX-2.6_11948692_EX-2.6_Manufacturing Agreement_ Supply Agreement"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "UpjohnInc_20200121_10-12G_EX-2.6_11948692_EX-2.6_Manufacturing Agreement_ Supply Agreement"
+        },
+        {
+          "question": "ما مدة الضمان؟",
+          "category": "Warranty Duration",
+          "contract": "UpjohnInc_20200121_10-12G_EX-2.6_11948692_EX-2.6_Manufacturing Agreement_ Supply Agreement"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "Antares Pharma, Inc. - Manufacturing Agreement"
+        },
+        {
+          "question": "هل يوجد التزام بالحصرية؟",
+          "category": "Exclusivity",
+          "contract": "NANOPHASETECHNOLOGIESCORP_11_01_2005-EX-99.1-DISTRIBUTOR AGREEMENT"
+        },
+        {
+          "question": "هل يحق لأي طرف التنازل عن العقد أو نقله لطرف آخر؟",
+          "category": "Anti-Assignment",
+          "contract": "NANOPHASETECHNOLOGIESCORP_11_01_2005-EX-99.1-DISTRIBUTOR AGREEMENT"
+        },
+        {
+          "question": "هل يوجد حد أدنى ملزم للشراء أو الطلب؟",
+          "category": "Minimum Commitment",
+          "contract": "NANOPHASETECHNOLOGIESCORP_11_01_2005-EX-99.1-DISTRIBUTOR AGREEMENT"
+        },
+        {
+          "question": "هل يوجد التزام بالحصرية؟",
+          "category": "Exclusivity",
+          "contract": "PenntexMidstreamPartnersLp_20150416_S-1A_EX-10.4_9042833_EX-10.4_Transportation Agreement"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين إنهاء العقد دون سبب؟",
+          "category": "Termination For Convenience",
+          "contract": "FerroglobePlc_20150624_F-4A_EX-10.20_9154746_EX-10.20_Outsourcing Agreement"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "BELLRINGBRANDS,INC_02_07_2020-EX-10.18-MASTER SUPPLY AGREEMENT"
+        },
+        {
+          "question": "هل يحق لأحد الطرفين تدقيق سجلات أو دفاتر الطرف الآخر؟",
+          "category": "Audit Rights",
+          "contract": "BELLICUMPHARMACEUTICALS,INC_05_07_2019-EX-10.1-Supply Agreement"
+        },
+        {
+          "question": "ما مدة الضمان؟",
+          "category": "Warranty Duration",
+          "contract": "BELLICUMPHARMACEUTICALS,INC_05_07_2019-EX-10.1-Supply Agreement"
+        },
+        {
+          "question": "ما مدة الضمان؟",
+          "category": "Warranty Duration",
+          "contract": "MARTINMIDSTREAMPARTNERSLP_01_23_2004-EX-10.3-TRANSPORTATION SERVICES AGREEMENT"
+        }
+      ]
+    }
+  ]
+}

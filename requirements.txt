@@ -1,0 +1,19 @@
+# torch is installed separately, from the CUDA index (see README).
+
+# pandas/numpy are pinned: newer wheels are blocked by Windows Smart App Control
+# on this machine until they gain reputation. Bump them together once they load.
+pandas==3.0.5
+numpy==2.5.3
+
+fastapi
+uvicorn[standard]
+google-genai
+sentence-transformers
+pgvector
+psycopg[binary]
+python-dotenv
+huggingface_hub
+pydantic
+
+jupyter
+ipykernel
