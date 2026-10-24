@@ -120,7 +120,8 @@ export default function Evaluation() {
                   <div className="grid grid-cols-[1fr_1fr] items-center gap-4">
                     <div className="space-y-1">
                       {([['English', v.en, 'bg-accent'], ['Arabic', v.ar, 'bg-blue-400']] as const).map(([lang, val, color]) => (
-                        <div key={lang} className="flex items-center gap-2" title={`${lang}: ${val}%`}>
+                        <div key={lang} className="flex items-center gap-2">
+                          <span className="w-14 shrink-0 text-xs text-muted">{lang}</span>
                           <div className="h-2.5 flex-1 rounded-full bg-ink-800">
                             <div className={`h-full rounded-full ${color}`} style={{ width: `${val}%` }} />
                           </div>
@@ -137,11 +138,6 @@ export default function Evaluation() {
                   </div>
                 </div>
               ))}
-              <div className="flex gap-4 text-xs text-muted">
-                <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-accent" /> English</span>
-                <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-blue-400" /> Arabic</span>
-                <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-amber-400" /> Time</span>
-              </div>
             </div>
             <img src="/mascots/mascot-evaluation.webp" alt="" className="hidden h-72 w-auto self-center object-contain xl:block" />
           </div>
