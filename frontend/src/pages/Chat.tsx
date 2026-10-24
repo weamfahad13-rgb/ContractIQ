@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { ChevronLeft, ChevronRight, Database, FileText, Loader2, SendHorizontal, ThumbsDown, ThumbsUp } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Database, FileText, FileX, Loader2, SendHorizontal, ThumbsDown, ThumbsUp } from 'lucide-react'
 
 import { api, isArabic, type ChatAnswer, type Citation, type ContractDetail, type ContractSummary } from '../api'
 
@@ -94,12 +94,13 @@ function RecordsSource({ data }: { data: NonNullable<ChatAnswer['data']> }) {
   )
 }
 
-function SourcePanel({ citations, active, setActive, confidence, data }: {
+function SourcePanel({ citations, active, setActive, confidence, data, answered }: {
   citations: Citation[]
   active: number
   setActive: (i: number) => void
   confidence?: ChatAnswer['confidence']
   data?: ChatAnswer['data']
+  answered: boolean
 }) {
   const [contract, setContract] = useState<ContractDetail | null>(null)
   const [full, setFull] = useState(false)
@@ -127,6 +128,18 @@ function SourcePanel({ citations, active, setActive, confidence, data }: {
   }, [contract, cite, full])
 
   if (!cite && data) return <RecordsSource data={data} />
+
+  if (!cite && answered) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center gap-3 p-6 text-center">
+        <FileX className="h-10 w-10 text-muted" aria-hidden />
+        <p className="font-semibold">No matching clause found</p>
+        <p className="max-w-xs text-sm text-muted">
+          The contracts searched don't contain a clause that answers this question.
+        </p>
+      </div>
+    )
+  }
 
   if (!cite) {
     return (
@@ -213,10 +226,9 @@ function SourcePanel({ citations, active, setActive, confidence, data }: {
   )
 }
 
-/** The sources an answer actually cites; if it cites none (e.g. "not found"), everything retrieved. */
+/** The sources an answer actually cites. */
 function shownSources(answer: ChatAnswer) {
-  const cited = answer.citations.filter((c) => c.cited)
-  return cited.length ? cited : answer.citations
+  return answer.citations.filter((c) => c.cited)
 }
 
 export default function Chat() {
@@ -418,6 +430,7 @@ export default function Chat() {
             setActive={(idx) => focus && setFocus({ ...focus, idx })}
             confidence={focusedAnswer?.confidence}
             data={focusedAnswer?.data}
+            answered={!!focusedAnswer}
           />
         </div>
       </aside>
