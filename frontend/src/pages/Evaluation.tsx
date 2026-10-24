@@ -1,8 +1,5 @@
 import { useEffect, useState } from 'react'
-import {
-  Bar, BarChart, CartesianGrid, LabelList, Legend, ResponsiveContainer, Scatter, ScatterChart, Tooltip, XAxis, YAxis, ZAxis,
-} from 'recharts'
-import type { LabelProps } from 'recharts'
+import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { FileCheck2, Gauge, ListOrdered, Target } from 'lucide-react'
 
 import { api, pct, type Evaluation as Ev, type RetrievalRun } from '../api'
@@ -16,18 +13,6 @@ const VERSIONS = [
 const AXIS = { stroke: '#9fb3c8', fontSize: 12 }
 const TOOLTIP = { contentStyle: { background: '#0e2140', border: '1px solid #1e3a5f', borderRadius: 8 } }
 const toPct = (v: number) => Math.round(v * 1000) / 10
-
-// v1 and v2 take about the same time and sit almost on top of each other, so v2's label goes
-// below its point and the others above.
-function PointLabel(props: LabelProps) {
-  const x = Number(props.x) || 0
-  const y = Number(props.y) || 0
-  return (
-    <text x={x} y={y + (props.value === 'v2' ? 22 : -12)} fill="#e2e8f0" fontSize={12} textAnchor="middle">
-      {props.value}
-    </text>
-  )
-}
 
 export default function Evaluation() {
   const [ev, setEv] = useState<Ev | null>(null)
@@ -60,12 +45,15 @@ export default function Evaluation() {
     English: toPct(run(v.mode, 'en')?.recall_at_k ?? 0),
     Arabic: toPct(run(v.mode, 'ar')?.recall_at_k ?? 0),
   }))
-  // One point per version and language: how long a question takes vs. how often it finds the clause.
-  const tradeoff = (lang: 'en' | 'ar') =>
-    VERSIONS.flatMap((v) => {
-      const r = run(v.mode, lang)
-      return r ? [{ name: v.label.split(' ')[0], ms: Math.round(r.avg_latency_ms), recall: toPct(r.recall_at_k) }] : []
-    })
+  // Per version: accuracy in each language, and time per question (averaged over both languages).
+  const speed = VERSIONS.flatMap((v) => {
+    const en = run(v.mode, 'en')
+    const ar = run(v.mode, 'ar')
+    if (!en || !ar) return []
+    return [{ label: v.label, en: toPct(en.recall_at_k), ar: toPct(ar.recall_at_k),
+              ms: Math.round((en.avg_latency_ms + ar.avg_latency_ms) / 2) }]
+  })
+  const maxMs = Math.max(1, ...speed.map((v) => v.ms))
   const categories = Object.keys(best.en?.per_category ?? {}).map((c) => ({
     category: c,
     en: best.en!.per_category[c],
@@ -119,39 +107,43 @@ export default function Evaluation() {
 
         <section className="card relative p-6">
           <h2 className="text-xl font-bold">Accuracy vs. speed</h2>
-          <p className="text-sm text-muted">Recall@{k} against time per question for each version (axes zoomed: 60–100%, log time)</p>
-          <div className="mt-4 flex h-72 gap-2">
-            <div className="min-w-0 flex-1">
-              <ResponsiveContainer>
-                <ScatterChart margin={{ top: 16, right: 16, bottom: 8 }}>
-                  <CartesianGrid stroke="#1e3a5f" strokeDasharray="3 3" />
-                  <XAxis
-                    type="number"
-                    dataKey="ms"
-                    name="Time"
-                    unit=" ms"
-                    scale="log"
-                    domain={[10, 1000]}
-                    ticks={[10, 30, 100, 300, 1000]}
-                    {...AXIS}
-                  />
-                  <YAxis type="number" dataKey="recall" name="Recall" domain={[60, 100]} unit="%" {...AXIS} />
-                  <Tooltip
-                    {...TOOLTIP}
-                    cursor={{ strokeDasharray: '3 3' }}
-                    formatter={(v, name) => (name === 'Time' ? `${v} ms` : `${v}%`)}
-                  />
-                  <Legend />
-                  <ZAxis range={[90, 90]} />
-                  <Scatter name="English" data={tradeoff('en')} fill="#22d3ee">
-                    <LabelList dataKey="name" content={PointLabel} />
-                  </Scatter>
-                  <Scatter name="Arabic" data={tradeoff('ar')} fill="#60a5fa" />
-
-                </ScatterChart>
-              </ResponsiveContainer>
+          <p className="text-sm text-muted">What each version gains in accuracy, and what it costs in time</p>
+          <div className="mt-5 flex gap-4">
+            <div className="min-w-0 flex-1 space-y-5">
+              <div className="grid grid-cols-[1fr_1fr] gap-4 text-xs text-muted">
+                <span>Accuracy (Recall@{k})</span>
+                <span>Time per question</span>
+              </div>
+              {speed.map((v) => (
+                <div key={v.label}>
+                  <p className="mb-1.5 text-sm font-semibold">{v.label}</p>
+                  <div className="grid grid-cols-[1fr_1fr] items-center gap-4">
+                    <div className="space-y-1">
+                      {([['English', v.en, 'bg-accent'], ['Arabic', v.ar, 'bg-blue-400']] as const).map(([lang, val, color]) => (
+                        <div key={lang} className="flex items-center gap-2" title={`${lang}: ${val}%`}>
+                          <div className="h-2.5 flex-1 rounded-full bg-ink-800">
+                            <div className={`h-full rounded-full ${color}`} style={{ width: `${val}%` }} />
+                          </div>
+                          <span className="w-12 text-right text-xs tabular-nums">{val}%</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="h-2.5 flex-1 rounded-full bg-ink-800">
+                        <div className="h-full rounded-full bg-amber-400" style={{ width: `${(100 * v.ms) / maxMs}%` }} />
+                      </div>
+                      <span className="w-14 text-right text-xs tabular-nums">{v.ms} ms</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <div className="flex gap-4 text-xs text-muted">
+                <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-accent" /> English</span>
+                <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-blue-400" /> Arabic</span>
+                <span className="flex items-center gap-1.5"><span className="h-2.5 w-2.5 rounded-full bg-amber-400" /> Time</span>
+              </div>
             </div>
-            <img src="/mascots/mascot-evaluation.webp" alt="" className="hidden h-full w-auto object-contain xl:block" />
+            <img src="/mascots/mascot-evaluation.webp" alt="" className="hidden h-72 w-auto self-center object-contain xl:block" />
           </div>
         </section>
       </div>
