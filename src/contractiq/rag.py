@@ -112,17 +112,19 @@ def run_sql(conn, question: str) -> dict:
     return execute_readonly(conn, sql)
 
 
-def confidence(hits: list[Hit]) -> str:
-    """Calibrated on the CUAD evaluation: when the top chunk is right its reranker score has a
-    median of 0.55, when it's wrong a median of 0.10. A top chunk that clearly stands out from
-    the runner-up is also a strong signal, even with a modest absolute score."""
+def confidence(hits: list[Hit], arabic: bool = False) -> str:
+    """Calibrated on the CUAD evaluation. English questions: when the top chunk is right its
+    reranker score has a median of 0.55, when wrong 0.07. Arabic questions against English
+    contracts score about 4x lower across the board (0.13 vs 0.03), so they get scaled
+    thresholds. A top chunk that clearly stands out from the runner-up is also a strong signal."""
     if not hits:
         return "low"
+    scale = 0.25 if arabic else 1.0
     top = hits[0].score
     second = hits[1].score if len(hits) > 1 else 0.0
-    if top >= 0.5 or (top >= 0.1 and top >= 5 * second):
+    if top >= 0.5 * scale or (top >= 0.1 * scale and top >= 5 * second):
         return "high"
-    return "medium" if top >= 0.1 else "low"
+    return "medium" if top >= 0.1 * scale else "low"
 
 
 def answer(question: str, contract_id: int | None = None) -> dict:
@@ -154,7 +156,7 @@ def answer(question: str, contract_id: int | None = None) -> dict:
         "route": route,
         "scoped_contract_id": scope,
         "answer": text,
-        "confidence": confidence(hits) if hits else ("high" if data and "rows" in data else "low"),
+        "confidence": confidence(hits, arabic=reply_in == "Arabic") if hits else ("high" if data and "rows" in data else "low"),
         "citations": [
             {"n": i, "chunk_id": h.chunk_id, "contract_id": h.contract_id, "contract_title": h.contract_title,
              "heading": h.heading, "start_char": h.start_char, "end_char": h.end_char,

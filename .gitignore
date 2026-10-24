@@ -20,3 +20,6 @@ Thumbs.db
 # Build artifacts
 *.egg-info/
 data/eval/answers_progress.json
+
+# Demo video build output
+demo/build/

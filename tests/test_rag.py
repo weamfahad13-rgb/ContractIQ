@@ -60,6 +60,14 @@ def test_confidence_levels():
     assert confidence([hit(1, 0.05), hit(2, 0.04)]) == "low"
 
 
+def test_arabic_questions_use_scaled_thresholds():
+    # Arabic questions against English contracts score ~4x lower for the same quality.
+    hits = [hit(1, 0.14), hit(2, 0.05)]
+    assert confidence(hits) == "medium"
+    assert confidence(hits, arabic=True) == "high"
+    assert confidence([hit(1, 0.01), hit(2, 0.01)], arabic=True) == "low"
+
+
 def test_rrf_rewards_chunks_ranked_well_in_both_lists():
     fused = rrf([hit(1), hit(2), hit(3)], [hit(3), hit(4), hit(1)])
     order = [h.chunk_id for h in fused]
