@@ -190,7 +190,7 @@ function SourcePanel({ citations, active, setActive, confidence, data }: {
           </>
         )}
       </div>
-      <div className="flex items-center gap-3 border-t border-line p-4">
+      {citations.length > 1 && <div className="flex items-center gap-3 border-t border-line p-4">
         <button
           onClick={() => setActive(Math.max(0, active - 1))}
           disabled={active === 0}
@@ -208,9 +208,15 @@ function SourcePanel({ citations, active, setActive, confidence, data }: {
         >
           <ChevronRight className="h-4 w-4" />
         </button>
-      </div>
+      </div>}
     </div>
   )
+}
+
+/** The sources an answer actually cites; if it cites none (e.g. "not found"), everything retrieved. */
+function shownSources(answer: ChatAnswer) {
+  const cited = answer.citations.filter((c) => c.cited)
+  return cited.length ? cited : answer.citations
 }
 
 export default function Chat() {
@@ -240,8 +246,7 @@ export default function Chat() {
       const answer = await api.chat(q, scope)
       setMessages((m) => {
         const next = [...m, { role: 'assistant' as const, answer }]
-        const firstCited = answer.citations.findIndex((c) => c.cited)
-        setFocus({ msg: next.length - 1, idx: Math.max(0, firstCited) })
+        setFocus({ msg: next.length - 1, idx: 0 })
         return next
       })
     } catch (e) {
@@ -325,7 +330,7 @@ export default function Chat() {
                   <div className="mt-2 rounded-xl border border-line bg-ink-850 px-4 py-3">
                     <AnswerText
                       text={m.answer.answer}
-                      onCite={(n) => setFocus({ msg: i, idx: Math.max(0, m.answer.citations.findIndex((c) => c.n === n)) })}
+                      onCite={(n) => setFocus({ msg: i, idx: Math.max(0, shownSources(m.answer).findIndex((c) => c.n === n)) })}
                     />
                     {m.answer.data && <DataTable data={m.answer.data} />}
                   </div>
@@ -336,9 +341,9 @@ export default function Chat() {
                         {m.answer.citations.filter((c) => c.cited).map((c) => (
                           <button
                             key={c.n}
-                            onClick={() => setFocus({ msg: i, idx: m.answer.citations.indexOf(c) })}
+                            onClick={() => setFocus({ msg: i, idx: shownSources(m.answer).indexOf(c) })}
                             className={`max-w-full truncate rounded-lg border px-3 py-1.5 text-sm hover:border-accent ${
-                              focus?.msg === i && m.answer.citations[focus.idx] === c ? 'border-accent text-accent' : 'border-accent/40'
+                              focus?.msg === i && shownSources(m.answer)[focus.idx] === c ? 'border-accent text-accent' : 'border-accent/40'
                             }`}
                           >
                             [{c.n}] {c.contract_title.split(' - ').pop()} · {c.heading.slice(0, 40)}
@@ -408,7 +413,7 @@ export default function Chat() {
         </div>
         <div className="min-h-0 flex-1">
           <SourcePanel
-            citations={focusedAnswer?.citations ?? []}
+            citations={focusedAnswer ? shownSources(focusedAnswer) : []}
             active={focus?.idx ?? 0}
             setActive={(idx) => focus && setFocus({ ...focus, idx })}
             confidence={focusedAnswer?.confidence}
