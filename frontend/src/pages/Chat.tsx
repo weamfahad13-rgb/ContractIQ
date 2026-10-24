@@ -78,6 +78,7 @@ function SourcePanel({ citations, active, setActive, confidence }: {
   confidence?: ChatAnswer['confidence']
 }) {
   const [contract, setContract] = useState<ContractDetail | null>(null)
+  const [full, setFull] = useState(false)
   const markRef = useRef<HTMLElement>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
   const cite = citations[active]
@@ -87,12 +88,19 @@ function SourcePanel({ citations, active, setActive, confidence }: {
     if (contract?.id !== cite.contract_id) api.contract(cite.contract_id).then(setContract)
   }, [cite, contract?.id])
 
-  // Scroll only the text panel (scrollIntoView would also scroll the page).
+  // Each new source opens on just the cited clause.
+  useEffect(() => {
+    setFull(false)
+  }, [cite])
+
+  // In the full view, scroll only the text panel to the clause (scrollIntoView would also scroll the page).
   useEffect(() => {
     const box = scrollRef.current
     const mark = markRef.current
-    if (box && mark) box.scrollTo({ top: mark.offsetTop - box.clientHeight / 3, behavior: 'smooth' })
-  }, [contract, cite])
+    if (!full || !box || !mark) return
+    const offset = mark.getBoundingClientRect().top - box.getBoundingClientRect().top
+    box.scrollTo({ top: box.scrollTop + offset - 24 })
+  }, [contract, cite, full])
 
   if (!cite) {
     return (
@@ -129,13 +137,28 @@ function SourcePanel({ citations, active, setActive, confidence }: {
       >
         {!text ? (
           <Loader2 className="h-5 w-5 animate-spin text-muted" aria-label="Loading contract" />
+        ) : !full ? (
+          <div className="space-y-4">
+            <p className="rounded-xl bg-mark p-4 leading-7 text-ink-950">{squash(text.slice(cite.start_char, cite.end_char)).trim()}</p>
+            <button onClick={() => setFull(true)} className="text-sm whitespace-normal text-accent hover:underline">
+              Show in full contract
+            </button>
+          </div>
         ) : (
           <>
-            {squash(text.slice(Math.max(0, cite.start_char - 1500), cite.start_char))}
-            <mark ref={markRef} className="rounded bg-mark px-1 text-ink-950">
-              {squash(text.slice(cite.start_char, cite.end_char))}
-            </mark>
-            {squash(text.slice(cite.end_char, cite.end_char + 1500))}
+            <button
+              onClick={() => setFull(false)}
+              className="sticky top-0 z-10 mb-3 rounded-lg border border-line bg-ink-850 px-3 py-1.5 text-sm whitespace-normal text-accent"
+            >
+              Show only the cited clause
+            </button>
+            <div>
+              {squash(text.slice(0, cite.start_char))}
+              <mark ref={markRef} className="rounded bg-mark px-1 text-ink-950">
+                {squash(text.slice(cite.start_char, cite.end_char))}
+              </mark>
+              {squash(text.slice(cite.end_char))}
+            </div>
           </>
         )}
       </div>
@@ -206,7 +229,7 @@ export default function Chat() {
   const cuad = contracts.filter((c) => c.source === 'cuad')
 
   return (
-    <div className="grid min-h-0 flex-1 gap-5 lg:h-[calc(100vh-7.5rem)] lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+    <div className="grid min-h-0 flex-1 gap-5 lg:h-[calc(100vh-7.5rem)] lg:flex-none lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:grid-rows-[minmax(0,1fr)]">
       <section className="card flex min-h-[70vh] flex-col lg:min-h-0">
         <div className="flex flex-wrap items-end justify-between gap-3 p-6 pb-2">
           <div>
@@ -351,11 +374,11 @@ export default function Chat() {
         </form>
       </section>
 
-      <aside className="card min-h-[60vh] overflow-hidden lg:min-h-0">
-        <div className="border-b border-line px-5 pt-5 pb-3">
+      <aside className="card flex h-[75vh] flex-col overflow-hidden lg:h-auto lg:min-h-0">
+        <div className="shrink-0 border-b border-line px-5 pt-5 pb-3">
           <h2 className="text-xl font-bold">Source document</h2>
         </div>
-        <div className="h-[calc(100%-3.75rem)]">
+        <div className="min-h-0 flex-1">
           <SourcePanel
             citations={focusedAnswer?.citations ?? []}
             active={focus?.idx ?? 0}
