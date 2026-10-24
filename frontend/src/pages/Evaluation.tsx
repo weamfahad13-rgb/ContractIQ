@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { FileCheck2, Gauge, ListOrdered, Target } from 'lucide-react'
 
 import { api, pct, type Evaluation as Ev, type RetrievalRun } from '../api'
@@ -10,8 +9,6 @@ const VERSIONS = [
   { mode: 'rerank', label: 'v3 + Reranker' },
 ] as const
 
-const AXIS = { stroke: '#9fb3c8', fontSize: 12 }
-const TOOLTIP = { contentStyle: { background: '#0e2140', border: '1px solid #1e3a5f', borderRadius: 8 } }
 const toPct = (v: number) => Math.round(v * 1000) / 10
 
 export default function Evaluation() {
@@ -37,14 +34,14 @@ export default function Evaluation() {
         ? `${ev.answers.n} answers judged · ${pct(ev.answers.not_found_rate ?? undefined)} said "not found" on a labeled clause`
         : 'Runs with a Gemini key',
     },
-    { icon: Gauge, label: 'Avg. retrieval time', value: best.en ? `${Math.round(best.en.avg_latency_ms)} ms` : '—', note: 'Per question, local GPU' },
+    {
+      icon: Gauge,
+      label: 'Avg. retrieval time',
+      value: best.en && best.ar ? `${Math.round((best.en.avg_latency_ms + best.ar.avg_latency_ms) / 2)} ms` : '—',
+      note: 'Per question, English and Arabic, local GPU',
+    },
   ]
 
-  const versions = VERSIONS.map((v) => ({
-    name: v.label,
-    English: toPct(run(v.mode, 'en')?.recall_at_k ?? 0),
-    Arabic: toPct(run(v.mode, 'ar')?.recall_at_k ?? 0),
-  }))
   // Per version: accuracy in each language, and time per question (averaged over both languages).
   const speed = VERSIONS.flatMap((v) => {
     const en = run(v.mode, 'en')
@@ -86,30 +83,11 @@ export default function Evaluation() {
         </div>
       </section>
 
-      <div className="grid gap-5 lg:grid-cols-2">
-        <section className="card p-6">
-          <h2 className="text-xl font-bold">Arabic vs English accuracy</h2>
-          <p className="text-sm text-muted">Recall@{k} for the same questions, by version</p>
-          <div className="mt-4 h-72">
-            <ResponsiveContainer>
-              <BarChart data={versions}>
-                <CartesianGrid stroke="#1e3a5f" strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="name" {...AXIS} />
-                <YAxis domain={[0, 100]} unit="%" {...AXIS} />
-                <Tooltip {...TOOLTIP} formatter={(v) => `${v}%`} cursor={{ fill: 'rgb(255 255 255 / 0.04)' }} />
-                <Legend />
-                <Bar dataKey="Arabic" fill="#60a5fa" radius={[6, 6, 0, 0]} />
-                <Bar dataKey="English" fill="#22d3ee" radius={[6, 6, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </section>
-
-        <section className="card relative p-6">
+      <section className="card relative p-6">
           <h2 className="text-xl font-bold">Accuracy vs. speed</h2>
           <p className="text-sm text-muted">What each version gains in accuracy, and what it costs in time</p>
-          <div className="mt-5 flex gap-4">
-            <div className="min-w-0 flex-1 space-y-5">
+          <div className="mt-5 flex justify-between gap-8">
+            <div className="min-w-0 max-w-4xl flex-1 space-y-5">
               <div className="grid grid-cols-[1fr_1fr] gap-4 text-xs text-muted">
                 <span>Accuracy (Recall@{k})</span>
                 <span>Time per question</span>
@@ -142,7 +120,6 @@ export default function Evaluation() {
             <img src="/mascots/mascot-evaluation.webp" alt="" className="hidden h-72 w-auto self-center object-contain xl:block" />
           </div>
         </section>
-      </div>
 
       <section className="card overflow-hidden">
         <h2 className="px-6 pt-5 pb-3 text-xl font-bold">Results by clause type</h2>
