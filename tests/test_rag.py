@@ -1,6 +1,6 @@
 import pytest
 
-from contractiq.rag import cited_numbers, clean_select, confidence, normalize_ar
+from contractiq.rag import cited_numbers, clean_select, confidence, normalize_ar, strip_supplier_names
 from contractiq.search import Hit, rrf
 
 
@@ -17,6 +17,16 @@ def hit(chunk_id: int, score: float = 0.0) -> Hit:
 ])
 def test_arabic_spelling_variants_normalize_to_the_same_text(variant, canonical):
     assert normalize_ar(variant) == normalize_ar(canonical)
+
+
+@pytest.mark.parametrize("question, expected", [
+    ("What is the late delivery penalty for Al-Sharq Pharma?", "What is the late delivery penalty for ?"),
+    ("ما غرامة التأخير في عقد نجد للتوزيع؟", "ما غرامة التأخير في عقد ؟"),
+    ("ما غرامة عقد الرياض للخدمات اللوجستيه", "ما غرامة عقد"),
+    ("Is there a cap on liability?", "Is there a cap on liability?"),
+])
+def test_supplier_names_are_stripped_from_the_search_text(question, expected):
+    assert strip_supplier_names(question) == expected
 
 
 @pytest.mark.parametrize("sql", [

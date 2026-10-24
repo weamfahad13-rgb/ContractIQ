@@ -103,7 +103,7 @@ def wrap(text: str, f: ImageFont.FreeTypeFont, width: int) -> list[str]:
 
 def make_caption(tag: str, title: str, body: str) -> Image.Image:
     f_tag, f_title, f_body = font("segoeuib.ttf", 20), font("segoeuib.ttf", 40), font("segoeui.ttf", 25)
-    width = 820
+    width = 900
     body_lines = wrap(body, f_body, width - 72)
     h = 40 + 30 + 56 + 36 * len(body_lines) + 32
     img = Image.new("RGBA", (width, h), (0, 0, 0, 0))

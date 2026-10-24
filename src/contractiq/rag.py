@@ -72,15 +72,32 @@ def normalize_ar(text: str) -> str:
     return text.translate(str.maketrans("أإآةى", "اااهي"))
 
 
+_AR_VARIANTS = {"ا": "[اأإآ]", "أ": "[اأإآ]", "إ": "[اأإآ]", "آ": "[اأإآ]", "ة": "[ةه]", "ه": "[ةه]",
+                "ى": "[ىي]", "ي": "[ىي]"}
+
+
+def _name_pattern(s) -> re.Pattern:
+    """Matches the supplier's English name, or its Arabic name in any common spelling."""
+    ar = "".join(_AR_VARIANTS.get(ch, re.escape(ch)) + "[ً-ْـ]*" for ch in normalize_ar(s.name_ar))
+    return re.compile(f"{re.escape(s.name)}|{ar}", re.IGNORECASE)
+
+
 def detect_contract(conn, question: str) -> int | None:
     """If the question names one of the sample suppliers, scope retrieval to its contract."""
-    q = question.lower()
-    q_ar = normalize_ar(question)
     for s in SUPPLIERS:
-        if s.name.lower() in q or normalize_ar(s.name_ar) in q_ar:
+        if _name_pattern(s).search(question):
             row = conn.execute("SELECT id FROM contracts WHERE supplier = %s", (s.name,)).fetchone()
             return row[0] if row else None
     return None
+
+
+def strip_supplier_names(question: str) -> str:
+    """Once a supplier name has scoped the search, it only adds noise: contract clauses rarely
+    repeat the party's name, and an Arabic name next to an English clause drags the reranker
+    score down (0.019 -> 0.043 on the Najd penalty question)."""
+    for s in SUPPLIERS:
+        question = _name_pattern(s).sub(" ", question)
+    return re.sub(r"\s+", " ", question).strip()
 
 
 def clean_select(sql: str) -> str | None:
@@ -132,7 +149,8 @@ def answer(question: str, contract_id: int | None = None) -> dict:
         route = generate(ROUTER_PROMPT.format(q=question), fast=True, schema=Route).route
         scope = contract_id or detect_contract(conn, question)
 
-        hits = retrieve(question, k=TOP_K, contract_id=scope, conn=conn) if route != "data" else []
+        search_text = strip_supplier_names(question) if scope and not contract_id else question
+        hits = retrieve(search_text or question, k=TOP_K, contract_id=scope, conn=conn) if route != "data" else []
         data = None
         if route != "contracts":
             try:
