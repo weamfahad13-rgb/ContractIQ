@@ -33,6 +33,10 @@ CURSOR_S = 0.55  # cursor move duration
 FADE_S = 0.4  # cross-fade between screenshots
 MAX_ZOOM = 2.4
 
+# Which effects are audible. Available: "whoosh", "click", "type", "pop", "rise".
+SOUNDS = {"type"}
+MUSIC = False  # the quiet background chord pad
+
 
 def font(name: str, size: int) -> ImageFont.FreeTypeFont:
     return ImageFont.truetype(str(FONTS / name), size)
@@ -315,14 +319,16 @@ def main() -> None:
     cur_pos = None
     for s in segments:
         for name in s.get("sfx", []):
-            place(name, t0 + (0.0 if name != "pop" else 0.1))
-        if s.get("cursor") and s.get("click"):
+            if name in SOUNDS:
+                place(name, t0 + (0.0 if name != "pop" else 0.1))
+        if s.get("cursor") and s.get("click") and "click" in SOUNDS:
             moved = cur_pos is not None and cur_pos != s["cursor"]
             place("click", t0 + (CURSOR_S if moved else 0.15))
         if s.get("cursor"):
             cur_pos = s["cursor"]
         t0 += s["dur"]
-    audio[: int(total * SR)] += pad(total)
+    if MUSIC:
+        audio[: int(total * SR)] += pad(total)
     audio /= max(1.0, np.abs(audio).max() / 0.95)
     write_wav(wav, audio[: int((total + 0.5) * SR)])
 
@@ -346,7 +352,8 @@ def main() -> None:
         top = cap_top
         if (new_caption or caption) and not is_card:
             img = make_caption(*s["caption"]) if new_caption else cap_img
-            top = covers(s.get("zoom") or s.get("cursor") and [*s["cursor"], 1, 1], target, img, W, H)
+            top = s.get("caption_top") or covers(s.get("zoom") or s.get("cursor") and [*s["cursor"], 1, 1],
+                                                 target, img, W, H)
         fade = (s.get("transition") == "fade" or is_card) and prev_frame is not None
         if new_caption or (cap_img is not None and top != cap_top):
             old_cap, old_since, old_top = cap_img, t_start, cap_top

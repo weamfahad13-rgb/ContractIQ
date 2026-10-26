@@ -40,10 +40,10 @@ CAPTIONS = {
                   "104 contracts with status and dates, and an alert for those expiring within 60 days."),
     "search": ("SEARCH", "Find any supplier, in either language",
                "Search by supplier name in English or Arabic, then open the contract in the chat."),
-    "eval": ("EVALUATION", "90.5% retrieval accuracy",
+    "eval": ("EVALUATION", "91.7% retrieval accuracy",
              "Recall@5 on lawyer-labeled clauses, plus LLM-judged faithfulness of the answers."),
     "tradeoff": ("TRADE-OFFS", "Every step is measured",
-                 "The reranker adds 3 points of accuracy for about 20x the time. A deliberate trade-off."),
+                 "Four versions side by side: the current one is the most accurate, at about half a second per question."),
 }
 
 
@@ -73,16 +73,16 @@ class Recorder:
         return [b[0] + b[2] / 2, b[1] + b[3] / 2] if b else None
 
     def add(self, img: str, dur: float, *, zoom=None, cursor=None, click=False, caption=None,
-            transition="cut", sfx=()):
+            transition="cut", sfx=(), caption_top=False):
         self.segments.append({"img": img, "dur": dur, "zoom": zoom, "cursor": cursor, "click": click,
                               "caption": CAPTIONS[caption] if caption else None,
-                              "transition": transition, "sfx": list(sfx)})
+                              "transition": transition, "sfx": list(sfx), "caption_top": caption_top})
 
     def type_question(self, text: str, caption: str):
         box = self.page.locator('input[placeholder="Ask about the contracts…"]')
         input_zoom = self.box('form', 0, pad=40)
         self.add(self.shot(), 0.8, zoom=input_zoom, cursor=self.center('form input'), click=True, caption=caption,
-                 transition="fade", sfx=["whoosh"])
+                 transition="fade")
         step = max(1, len(text) // 14)
         for k in range(step, len(text) + step, step):
             box.fill(text[:k])
@@ -90,7 +90,7 @@ class Recorder:
         self.add(self.shot(), 0.5, zoom=input_zoom, cursor=self.center('button[aria-label="Send"]'), click=True)
         box.press("Enter")
         self.page.wait_for_timeout(700)
-        self.add(self.shot(), 1.2, zoom=None, caption=caption, sfx=["whoosh"])
+        self.add(self.shot(), 1.2, zoom=None, caption=caption)
         self.page.wait_for_function(
             "() => !document.body.innerText.includes('Searching the contracts')", timeout=300_000)
         self.page.wait_for_timeout(1200)
@@ -114,77 +114,59 @@ def main() -> None:
         page.goto(BASE)
         page.wait_for_load_state("networkidle")
         page.wait_for_timeout(800)
+        # The camera only zooms in on what is being clicked or typed into; everything else is
+        # shown full-frame.
         hero = r.shot()
-        r.add(hero, 2.2, caption="overview", transition="fade", sfx=["rise"])
-        r.add(hero, 3.0, zoom=r.box("h1", pad=60))
-        r.add(hero, 2.4, zoom=r.box("img[alt^='ContractIQ mascot']", pad=20))
+        r.add(hero, 5.0, caption="overview", transition="fade")
 
         page.locator("h2", has_text="Measured, not guessed").scroll_into_view_if_needed()
         page.evaluate("window.scrollBy(0, 160)")
         page.wait_for_timeout(600)
-        metrics = r.shot()
-        r.add(metrics, 1.2, caption="measured", transition="fade", sfx=["whoosh"])
-        section = page.locator("h2", has_text="Measured, not guessed").locator("xpath=..")
-        b = section.bounding_box()
-        r.add(metrics, 3.6, zoom=[b["x"] * SCALE - 40, b["y"] * SCALE - 40, b["width"] * SCALE + 80, b["height"] * SCALE + 80])
+        r.add(r.shot(), 4.6, caption="measured", transition="fade")
 
         page.evaluate("window.scrollTo(0, 0)")
         page.wait_for_timeout(400)
-        top = r.shot()
-        r.add(top, 1.6, caption="start", transition="fade", sfx=["whoosh"],
+        r.add(r.shot(), 1.6, caption="start", transition="fade",
               cursor=r.center("a.bg-accent"), click=True, zoom=r.box("a.bg-accent", pad=140))
         page.locator("a.bg-accent").first.click()
         page.wait_for_load_state("networkidle")
         page.wait_for_timeout(1000)
 
         # Chat: grounded answer and the clause
-        r.add(r.shot(), 2.6, caption="chat", transition="fade", sfx=["whoosh"])
+        r.add(r.shot(), 2.6, caption="chat", transition="fade")
         r.type_question("What is the late delivery penalty for Al-Sharq Pharma?", "chat")
-        ans = r.shot()
-        r.add(ans, 1.0, caption="grounded", transition="fade", sfx=["pop"])
-        r.add(ans, 3.2, zoom=r.answer_bubble(), cursor=r.center('button[aria-label^="Show source"]'))
-        r.add(ans, 3.4, zoom=r.box("aside", pad=10), cursor=r.center("aside p.rounded-xl"))
+        r.add(r.shot(), 5.5, caption="grounded", transition="fade",
+              cursor=r.center('button[aria-label^="Show source"]'))
 
-        page.get_by_role("button", name="Show in full contract").click()
+        full_button = "button:has-text('Show in full contract')"
+        r.add(r.shot(), 1.4, caption="verify", zoom=r.box(full_button, pad=120),
+              cursor=r.center(full_button), click=True)
+        page.locator(full_button).click()
         page.wait_for_timeout(900)
-        full = r.shot()
-        r.add(full, 1.0, caption="verify", transition="fade", sfx=["whoosh"])
-        r.add(full, 3.4, zoom=r.box("aside mark", pad=110))
+        r.add(r.shot(), 3.8, transition="fade")
 
         # Cross-lingual
         r.type_question("ما غرامة التأخير في عقد نجد للتوزيع؟", "crossling")
-        ans = r.shot()
-        r.add(ans, 1.0, transition="fade", sfx=["pop"])
-        r.add(ans, 3.2, zoom=r.answer_bubble())
-        r.add(ans, 3.2, zoom=r.box("aside", pad=10))
+        r.add(r.shot(), 5.5, transition="fade")
 
         # Text-to-SQL
         r.type_question("Which supplier has the most late deliveries?", "sql")
-        ans = r.shot()
-        r.add(ans, 1.0, transition="fade", sfx=["pop"])
-        r.add(ans, 3.0, zoom=r.answer_bubble())
-        r.add(ans, 3.4, zoom=r.box("aside pre", pad=120))
+        r.add(r.shot(), 5.5, transition="fade")
 
         # No guessing
         r.type_question("What is the Al-Sharq Pharma CEO's name?", "nogues")
-        ans = r.shot()
-        r.add(ans, 1.0, transition="fade", sfx=["pop"])
-        r.add(ans, 3.0, zoom=r.answer_bubble())
-        r.add(ans, 3.0, zoom=r.box("aside", pad=10))
+        r.add(r.shot(), 5.0, transition="fade")
 
         # Contracts
         page.get_by_role("link", name="Contracts").click()
         page.wait_for_load_state("networkidle")
         page.wait_for_timeout(1000)
-        contracts = r.shot()
-        r.add(contracts, 2.0, caption="contracts", transition="fade", sfx=["whoosh"], zoom=None)
-        r.add(contracts, 3.0, zoom=r.box("button:has-text('expire in the next')", pad=60),
+        r.add(r.shot(), 5.0, caption="contracts", transition="fade",
               cursor=r.center("button:has-text('expire in the next')"))
-        r.add(contracts, 3.0, zoom=r.box("table", pad=10))
 
         search = page.locator('input[aria-label="Search contracts"]')
         search_zoom = r.box("section.card", pad=0)
-        r.add(r.shot(), 0.9, caption="search", transition="fade", sfx=["whoosh"], zoom=search_zoom,
+        r.add(r.shot(), 0.9, caption="search", transition="fade", zoom=search_zoom,
               cursor=r.center('input[aria-label="Search contracts"]'), click=True)
         word = "الرياض"
         for k in range(1, len(word) + 1):
@@ -192,30 +174,23 @@ def main() -> None:
             r.add(r.shot(), 0.14, zoom=search_zoom, sfx=["type"])
         page.wait_for_timeout(300)
         found = r.shot()
-        r.add(found, 2.6, zoom=r.box("table", pad=20), cursor=r.center("tbody a"))
-        r.add(found, 0.6, zoom=r.box("table", pad=20), cursor=r.center("tbody a"), click=True)
+        r.add(found, 2.2, cursor=r.center("tbody a"))
+        r.add(found, 0.9, zoom=r.box("tbody tr", pad=80), cursor=r.center("tbody a"), click=True)
         page.locator("tbody a").first.click()
         page.wait_for_load_state("networkidle")
         page.wait_for_timeout(900)
-        r.add(r.shot(), 2.6, transition="fade", sfx=["whoosh"], zoom=r.box("main section .flex-wrap", pad=60),
-              cursor=r.center("main select"))
+        r.add(r.shot(), 2.6, transition="fade", cursor=r.center("main select"))
 
         # Evaluation
         page.get_by_role("link", name="Evaluation").click()
         page.wait_for_load_state("networkidle")
         page.wait_for_timeout(1200)
-        ev = r.shot()
-        r.add(ev, 1.6, caption="eval", transition="fade", sfx=["whoosh"])
-        r.add(ev, 3.6, zoom=r.box("main section.card .grid", pad=30))
+        r.add(r.shot(), 5.0, caption="eval", transition="fade")
 
         page.locator("h2", has_text="Accuracy vs. speed").scroll_into_view_if_needed()
         page.evaluate("window.scrollBy(0, -40)")
         page.wait_for_timeout(500)
-        speed = r.shot()
-        sec = page.locator("h2", has_text="Accuracy vs. speed").locator("xpath=..")
-        b = sec.bounding_box()
-        r.add(speed, 1.0, caption="tradeoff", transition="fade", sfx=["whoosh"])
-        r.add(speed, 4.0, zoom=[b["x"] * SCALE, b["y"] * SCALE, b["width"] * SCALE, b["height"] * SCALE])
+        r.add(r.shot(), 5.0, caption="tradeoff", transition="fade", caption_top=True)  # the chart is at the bottom
 
         browser.close()
 
