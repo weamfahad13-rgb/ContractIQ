@@ -105,24 +105,33 @@ def wrap(text: str, f: ImageFont.FreeTypeFont, width: int) -> list[str]:
     return lines + [line] if line else lines
 
 
+CAPTION_MARGIN = 30  # transparent room around the card for its shadow
+
+
 def make_caption(tag: str, title: str, body: str) -> Image.Image:
+    """A light card with dark text, so it reads as a video overlay, not part of the dark app UI."""
     f_tag, f_title, f_body = font("segoeuib.ttf", 20), font("segoeuib.ttf", 40), font("segoeui.ttf", 25)
     width = 900
     body_lines = wrap(body, f_body, width - 72)
     h = 40 + 30 + 56 + 36 * len(body_lines) + 32
-    img = Image.new("RGBA", (width, h), (0, 0, 0, 0))
+    m = CAPTION_MARGIN
+    img = Image.new("RGBA", (width + 2 * m, h + 2 * m), (0, 0, 0, 0))
+    shadow = Image.new("RGBA", img.size, (0, 0, 0, 0))
+    ImageDraw.Draw(shadow).rounded_rectangle([m, m + 8, m + width, m + h + 8], radius=22, fill=(0, 0, 0, 150))
+    img.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(14)))
     d = ImageDraw.Draw(img)
-    d.rounded_rectangle([0, 0, width - 1, h - 1], radius=22, fill=(*NAVY, 232), outline=(42, 77, 120, 255), width=2)
-    d.rounded_rectangle([0, 0, 8, h - 1], radius=4, fill=(*ACCENT, 255))
-    d.text((36, 36), " ".join(tag), font=f_tag, fill=ACCENT)
-    d.text((36, 66), title, font=f_title, fill=WHITE)
+    d.rounded_rectangle([m, m, m + width - 1, m + h - 1], radius=22, fill=(248, 250, 252, 255))
+    d.rounded_rectangle([m, m, m + 10, m + h - 1], radius=5, fill=(*ACCENT, 255))
+    d.text((m + 36, m + 36), " ".join(tag), font=f_tag, fill=(8, 145, 178))
+    d.text((m + 36, m + 66), title, font=f_title, fill=NAVY)
     for i, line in enumerate(body_lines):
-        d.text((36, 126 + 36 * i), line, font=f_body, fill=MUTED)
+        d.text((m + 36, m + 126 + 36 * i), line, font=f_body, fill=(71, 85, 105))
     return img
 
 
 def caption_y(cap: Image.Image, top: bool, H: int) -> int:
-    return 60 if top else H - cap.height - 60
+    m = CAPTION_MARGIN
+    return 60 - m if top else H - cap.height - 60 + m
 
 
 def covers(focus, cam, cap: Image.Image, W, H) -> bool:
@@ -131,7 +140,8 @@ def covers(focus, cam, cap: Image.Image, W, H) -> bool:
         return False
     x0, y0 = to_screen(focus[:2], cam, W, H)
     x1, y1 = to_screen((focus[0] + focus[2], focus[1] + focus[3]), cam, W, H)
-    cx0, cy0, cx1 = 60, H - cap.height - 60, 60 + cap.width
+    m = CAPTION_MARGIN  # the card sits inside the shadow margin
+    cx0, cy0, cx1 = 60, H - (cap.height - 2 * m) - 60, 60 + cap.width - 2 * m
     return x0 < cx1 and x1 > cx0 and y1 > cy0
 
 
@@ -381,12 +391,12 @@ def main() -> None:
             # caption: old one fades out, new one slides up and fades in
             if old_cap is not None and now - old_since < 0.25:
                 a = 1 - (now - old_since) / 0.25
-                frame.alpha_composite(with_alpha(old_cap, a), (60, caption_y(old_cap, old_top, H)))
+                frame.alpha_composite(with_alpha(old_cap, a), (60 - CAPTION_MARGIN, caption_y(old_cap, old_top, H)))
             if cap_img is not None:
                 k = ease((now - cap_since - 0.15) / 0.4)
                 if k > 0:
                     slide = int(26 * (1 - k)) * (-1 if cap_top else 1)
-                    frame.alpha_composite(with_alpha(cap_img, k), (60, caption_y(cap_img, cap_top, H) + slide))
+                    frame.alpha_composite(with_alpha(cap_img, k), (60 - CAPTION_MARGIN, caption_y(cap_img, cap_top, H) + slide))
             # cursor and click ripple
             if pos and not is_card:
                 p = pos
