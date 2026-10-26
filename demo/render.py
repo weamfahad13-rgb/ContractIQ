@@ -107,6 +107,34 @@ def wrap(text: str, f: ImageFont.FreeTypeFont, width: int) -> list[str]:
 
 CAPTION_MARGIN = 30  # transparent room around the card for its shadow
 
+SLOWDOWN = 1.3  # stretch for every non-typing shot
+WORDS_PER_SECOND = 3.0  # comfortable reading speed for a caption
+CAPTION_EXTRA_S = 2.0  # time to notice a new caption before reading it
+
+
+def pace(segments: list[dict]) -> list[dict]:
+    """Slow the storyboard down and keep every caption on screen long enough to read.
+
+    Typing frames keep their speed. If a caption's shots add up to less than its reading time,
+    the last still shot under that caption is held longer."""
+    segments = [dict(s, dur=s["dur"] if s["dur"] < 0.2 else s["dur"] * SLOWDOWN) for s in segments]
+    # A caption block starts where the caption changes (shots often repeat the current caption).
+    starts, current = [], None
+    for i, s in enumerate(segments):
+        if s.get("caption") and s["caption"] != current:
+            starts.append(i)
+            current = s["caption"]
+    starts.append(len(segments))
+    for a, b in zip(starts, starts[1:]):
+        tag, title, body = segments[a]["caption"]
+        need = len(f"{title} {body}".split()) / WORDS_PER_SECOND + CAPTION_EXTRA_S
+        have = sum(s["dur"] for s in segments[a:b])
+        if have < need:
+            hold = max(range(a, b), key=lambda i: segments[i]["dur"])
+            segments[hold]["dur"] += need - have
+    return segments
+
+
 
 def make_caption(tag: str, title: str, body: str) -> Image.Image:
     """A light card with dark text, so it reads as a video overlay, not part of the dark app UI."""
@@ -300,7 +328,7 @@ def main() -> None:
     outro = card(W, H, "ContractIQ", "Hybrid search · Reranking · Text-to-SQL",
                  ["Arabic & English · Clause-level citations · Evaluated on CUAD",
                   "Python · FastAPI · PostgreSQL + pgvector · BGE-M3 · Gemini"], "mascot-evaluation.webp")
-    segments = ([{"card": title, "dur": 4.2, "sfx": ["rise"]}] + board["segments"]
+    segments = ([{"card": title, "dur": 4.2, "sfx": ["rise"]}] + pace(board["segments"])
                 + [{"card": outro, "dur": 5.5, "sfx": ["whoosh"]}])
 
     total = sum(s["dur"] for s in segments)
