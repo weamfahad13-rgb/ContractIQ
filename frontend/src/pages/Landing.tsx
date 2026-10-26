@@ -131,7 +131,7 @@ export default function Landing() {
       </section>
 
       <section className="mx-auto mt-16 max-w-[1400px] px-4 sm:px-10">
-        <h2 className="text-4xl font-extrabold">Measured, not guessed</h2>
+        <h2 className="text-4xl font-extrabold">Measured results</h2>
         <p className="mt-2 text-muted">Evaluated on expert-labeled contracts from CUAD.</p>
         <div className="mt-6 grid gap-5 md:grid-cols-3">
           {metrics.map((m) => (

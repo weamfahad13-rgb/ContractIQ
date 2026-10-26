@@ -21,7 +21,7 @@ VIEW_W, VIEW_H, SCALE = 1600, 900, 1.2  # screenshots come out at 1920x1080
 CAPTIONS = {
     "overview": ("OVERVIEW", "Ask your contracts. Get clear answers.",
                  "An AI assistant for procurement teams. Every answer points to the exact clause it came from."),
-    "measured": ("MEASURED", "Evaluated, not guessed",
+    "measured": ("MEASURED", "Tested on real contracts",
                  "Retrieval is tested on 675 questions over lawyer-labeled contracts from the CUAD dataset."),
     "start": ("GET STARTED", "Into the app", "Three pages: Chat, Contracts and Evaluation."),
     "chat": ("CHAT", "Ask in English or Arabic",
@@ -119,7 +119,7 @@ def main() -> None:
         hero = r.shot()
         r.add(hero, 5.0, caption="overview", transition="fade")
 
-        page.locator("h2", has_text="Measured, not guessed").scroll_into_view_if_needed()
+        page.locator("h2", has_text="Measured results").scroll_into_view_if_needed()
         page.evaluate("window.scrollBy(0, 160)")
         page.wait_for_timeout(600)
         r.add(r.shot(), 4.6, caption="measured", transition="fade")
