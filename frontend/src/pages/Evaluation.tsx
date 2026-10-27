@@ -33,7 +33,7 @@ export default function Evaluation() {
       value: pct(ev?.answers?.faithfulness),
       note: ev?.answers
         ? `${ev.answers.n} answers judged · ${pct(ev.answers.not_found_rate ?? undefined)} said "not found" on a labeled clause`
-        : 'Runs with a Gemini key',
+        : 'Needs an LLM API key',
     },
     {
       icon: Gauge,

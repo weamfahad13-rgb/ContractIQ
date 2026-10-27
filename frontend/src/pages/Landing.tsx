@@ -17,7 +17,7 @@ const steps = [
   { title: 'Review the evidence', body: 'See the exact clause for every answer.' },
 ]
 
-const stack = ['Python', 'FastAPI', 'PostgreSQL + pgvector', 'BGE-M3', 'Gemini']
+const stack = ['Python', 'FastAPI', 'PostgreSQL + pgvector', 'BGE-M3', 'React']
 
 function Github({ className }: { className?: string }) {
   return (

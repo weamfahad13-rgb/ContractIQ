@@ -327,7 +327,7 @@ def main() -> None:
                  ["A bilingual RAG assistant for supplier contracts", "and purchase-order data."], "mascot-landing.webp")
     outro = card(W, H, "ContractIQ", "Hybrid search · Reranking · Text-to-SQL",
                  ["Arabic & English · Clause-level citations · Evaluated on CUAD",
-                  "Python · FastAPI · PostgreSQL + pgvector · BGE-M3 · Gemini"], "mascot-evaluation.webp")
+                  "Python · FastAPI · PostgreSQL + pgvector · BGE-M3 · React"], "mascot-evaluation.webp")
     segments = ([{"card": title, "dur": 4.2, "sfx": ["rise"]}] + pace(board["segments"])
                 + [{"card": outro, "dur": 5.5, "sfx": ["whoosh"]}])
 
