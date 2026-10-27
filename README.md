@@ -4,7 +4,7 @@ ContractIQ is a RAG (Retrieval-Augmented Generation) assistant for procurement t
 a question about a supplier contract in English or Arabic, and it answers with the exact clause
 the answer came from.
 
-![A question about a supplier's late delivery penalty, answered with the cited clause](docs/screenshots/chat.png)
+![ContractIQ landing page](docs/screenshots/landing.png)
 
 ## How it works
 
@@ -14,6 +14,8 @@ matches to pick the most relevant one. The language model writes the answer usin
 clauses and cites them. Questions about numbers, such as how many orders arrived late, go
 through Text-to-SQL on the purchase-order database instead. If the contracts don't contain the
 answer, the assistant says so rather than guessing.
+
+![A question about a supplier's late delivery penalty, answered with the cited clause](docs/screenshots/chat.png)
 
 ## Results
 
