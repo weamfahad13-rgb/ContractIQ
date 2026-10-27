@@ -115,7 +115,7 @@ cd frontend && npm install && npm run dev   # http://localhost:5173
 ## Tests
 
 ```bash
-pytest tests          # 57 tests; the API/database ones need the Postgres container running
+pytest tests          # 62 tests; the API/database ones need the Postgres container running
 ```
 
 They cover the clause chunker (offsets, Arabic headings, fallbacks), the SQL guard (only a single
