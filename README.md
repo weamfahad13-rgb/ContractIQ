@@ -29,5 +29,3 @@ docker compose up -d
 pip install -r requirements.txt -e .
 uvicorn contractiq.api:app
 ```
-
-Full setup, evaluation details and tests: [docs/details.md](docs/details.md).
