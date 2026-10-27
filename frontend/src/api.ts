@@ -85,7 +85,7 @@ export const api = {
     }),
 }
 
-export const GITHUB_URL = 'https://github.com/'
+export const GITHUB_URL = 'https://github.com/weamfahad13-rgb/ContractIQ'
 
 export const isArabic = (text: string) => /[؀-ۿ]/.test(text)
 
