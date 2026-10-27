@@ -32,8 +32,9 @@ CAPTIONS = {
                "One click opens the whole contract, scrolled to the highlighted clause."),
     "crossling": ("CROSS-LINGUAL", "Arabic question, English contract",
                   "Multilingual embeddings match meaning across languages. The answer comes back in Arabic."),
-    "sql": ("TEXT-TO-SQL", "Numbers come from the database",
-            "Data questions become a read-only SQL query, shown in full so it can be checked."),
+    "sql": ("TEXT-TO-SQL", "Questions about orders, answered from the data",
+            "The assistant turns the question into a database query and shows it, "
+            "so you can see where the numbers came from."),
     "nogues": ("NO GUESSING", "If the contract doesn't say, it says so",
                "Answers use only the retrieved clauses. Missing information is reported, never invented."),
     "contracts": ("CONTRACTS", "Track renewals at a glance",
