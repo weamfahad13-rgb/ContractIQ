@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { FileCheck2, Gauge, ListOrdered, Target } from 'lucide-react'
+import { Gauge, ListOrdered, Target } from 'lucide-react'
 
 import { api, pct, type Evaluation as Ev, type RetrievalRun } from '../api'
 
@@ -27,14 +27,6 @@ export default function Evaluation() {
   const cards = [
     { icon: Target, label: 'Retrieval accuracy', value: pct(best.en?.recall_at_k), note: `Recall@${k}, English questions` },
     { icon: ListOrdered, label: 'Ranking quality', value: best.en ? best.en.mrr.toFixed(3) : '—', note: 'MRR, English questions' },
-    {
-      icon: FileCheck2,
-      label: 'Answer faithfulness',
-      value: pct(ev?.answers?.faithfulness),
-      note: ev?.answers
-        ? `${ev.answers.n} answers judged · ${pct(ev.answers.not_found_rate ?? undefined)} said "not found" on a labeled clause`
-        : 'Needs an LLM API key',
-    },
     {
       icon: Gauge,
       label: 'Avg. retrieval time',
@@ -70,7 +62,7 @@ export default function Evaluation() {
         {ev && !ev.retrieval && (
           <p className="mt-3 text-amber-300">No results yet. Run <code>python -m contractiq.evaluate</code>.</p>
         )}
-        <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-6 grid gap-4 sm:grid-cols-3">
           {cards.map(({ icon: Icon, label, value, note }) => (
             <div key={label} className="flex gap-4 rounded-xl border border-line-strong bg-ink-900/60 p-5">
               <Icon className="h-8 w-8 shrink-0 text-accent" aria-hidden />

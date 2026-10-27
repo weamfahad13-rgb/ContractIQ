@@ -41,7 +41,6 @@ export default function Landing() {
   const ar = bestRun(ev, 'ar')
   const metrics = [
     { label: 'Retrieval accuracy', value: pct(en?.recall_at_k), note: `Recall@${ev?.retrieval?.k ?? 5}, English questions` },
-    { label: 'Answer faithfulness', value: pct(ev?.answers?.faithfulness), note: 'Claims supported by the cited source' },
     { label: 'Arabic vs English', value: ar && en ? `${pct(ar.recall_at_k)} / ${pct(en.recall_at_k)}` : '—', note: 'Same questions, asked in Arabic' },
   ]
 
@@ -133,7 +132,7 @@ export default function Landing() {
       <section className="mx-auto mt-16 max-w-[1400px] px-4 sm:px-10">
         <h2 className="text-4xl font-extrabold">Measured results</h2>
         <p className="mt-2 text-muted">Evaluated on expert-labeled contracts from CUAD.</p>
-        <div className="mt-6 grid gap-5 md:grid-cols-3">
+        <div className="mt-6 grid gap-5 md:grid-cols-2">
           {metrics.map((m) => (
             <div key={m.label} className="card p-6">
               <p className="font-semibold">{m.label}</p>

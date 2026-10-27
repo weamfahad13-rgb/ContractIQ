@@ -41,7 +41,7 @@ CAPTIONS = {
     "search": ("SEARCH", "Find any supplier, in either language",
                "Search by supplier name in English or Arabic, then open the contract in the chat."),
     "eval": ("EVALUATION", "91.7% retrieval accuracy",
-             "Recall@5 on lawyer-labeled clauses, plus LLM-judged faithfulness of the answers."),
+             "How often the right clause is found, tested on 675 questions labeled by lawyers."),
     "tradeoff": ("TRADE-OFFS", "Every step is measured",
                  "Four versions side by side: the current one is the most accurate, at about half a second per question."),
 }
