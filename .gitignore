@@ -21,5 +21,5 @@ Thumbs.db
 *.egg-info/
 data/eval/answers_progress.json
 
-# Demo video build output
-demo/build/
+# Demo video tooling (kept locally only)
+demo/
