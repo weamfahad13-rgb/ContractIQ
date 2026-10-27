@@ -39,9 +39,10 @@ export default function Landing() {
 
   const en = bestRun(ev, 'en')
   const ar = bestRun(ev, 'ar')
+  const k = ev?.retrieval?.k ?? 5
   const metrics = [
-    { label: 'Retrieval accuracy', value: pct(en?.recall_at_k), note: `Recall@${ev?.retrieval?.k ?? 5}, English questions` },
-    { label: 'Arabic vs English', value: ar && en ? `${pct(ar.recall_at_k)} / ${pct(en.recall_at_k)}` : '—', note: 'Same questions, asked in Arabic' },
+    { label: 'English questions', value: pct(en?.recall_at_k), note: `Retrieval accuracy (Recall@${k})` },
+    { label: 'Arabic questions', value: pct(ar?.recall_at_k), note: `Same questions, asked in Arabic (Recall@${k})` },
   ]
 
   return (
