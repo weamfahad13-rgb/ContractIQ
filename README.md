@@ -4,6 +4,8 @@ ContractIQ is a RAG (Retrieval-Augmented Generation) assistant for procurement t
 a question about a supplier contract in English or Arabic, and it answers with the exact clause
 the answer came from.
 
+![A question about a supplier's late delivery penalty, answered with the cited clause](docs/screenshots/chat.png)
+
 ## How it works
 
 The contracts are split into clauses and stored as embeddings. When you ask a question, the
@@ -17,6 +19,8 @@ answer, the assistant says so rather than guessing.
 
 The retrieval was tested on 675 questions over real contracts labeled by lawyers (the CUAD
 dataset). It finds the right clause 91.7% of the time in English and 87.1% in Arabic.
+
+![Evaluation page comparing four retrieval versions by accuracy and speed](docs/screenshots/evaluation.png)
 
 ## Built with
 
