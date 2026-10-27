@@ -139,7 +139,7 @@ def pace(segments: list[dict]) -> list[dict]:
 def make_caption(tag: str, title: str, body: str) -> Image.Image:
     """A light card with dark text, so it reads as a video overlay, not part of the dark app UI."""
     f_tag, f_title, f_body = font("segoeuib.ttf", 20), font("segoeuib.ttf", 40), font("segoeui.ttf", 25)
-    width = 900
+    width = max(900, int(f_title.getlength(title)) + 80)  # long titles widen the card instead of spilling out
     body_lines = wrap(body, f_body, width - 72)
     h = 40 + 30 + 56 + 36 * len(body_lines) + 32
     m = CAPTION_MARGIN
