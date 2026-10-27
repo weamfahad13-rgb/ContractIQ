@@ -30,8 +30,29 @@ Python, FastAPI, PostgreSQL with pgvector, BGE-M3 and React.
 
 ## Run it
 
-```bash
-docker compose up -d
-pip install -r requirements.txt -e .
-uvicorn contractiq.api:app
-```
+You need Docker, Python 3.12+ and Node.js. A GPU makes search faster but isn't required.
+
+1. Download the CUAD dataset (CUAD_v1.zip) from https://zenodo.org/records/4595826
+   and unzip it into `data/raw/cuad/`.
+2. Copy `.env.example` to `.env` and add your Gemini API key.
+3. Start the database and install everything:
+
+   ```bash
+   docker compose up -d
+   pip install -r requirements.txt -e .
+   cd frontend && npm install && npm run build && cd ..
+   ```
+
+4. Load the contracts and build the search index:
+
+   ```bash
+   python -m contractiq.ingest
+   python -m contractiq.synthetic
+   python -m contractiq.embed
+   ```
+
+5. Start the app and open http://localhost:8000
+
+   ```bash
+   uvicorn contractiq.api:app
+   ```
